@@ -71,6 +71,9 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']){
             $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['end'] ==
                 $benefitPassIdToInfo[$customer["customer_id"]]["end"];
         }
+        if (!$benefitPassIdToInfo[$customer["customer_id"]]){
+            $benefitPassPurchaseReportsMeetSearchCriteria=false;
+        }
         if ($benefitPassPurchaseReportsMeetSearchCriteria){
             $benefitPass = $benefitPassIdToInfo[$customer["customer_id"]];
             $customer["benefit"] = $benefitPass;
@@ -119,6 +122,9 @@ else if ('/pass' === $_SERVER['PATH_INFO']){
         }
         if ($printThis && array_key_exists("duration", $_GET)){
             $printThis = $pass['duration'] == $_GET['duration'];
+        }
+        if ($printThis && array_key_exists("customer_id", $_GET)){
+            $printThis = $pass['customer_id'] == $_GET['customer_id'];
         }
         if ($printThis){
             $result[] = $pass;
