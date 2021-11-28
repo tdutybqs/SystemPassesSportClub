@@ -19,7 +19,7 @@ client.test("Администратор имеет возможность доб
 });
  %}
 
-### 2 Админ смотрит окончание льгот
+### 2 Админ смотрит окончание льгот: id
 GET http://localhost:8080/pass?customer_id=5
 
 > {%
@@ -34,16 +34,188 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
      client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
-
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
      client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
      client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
-     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
-
 });
  %}
 
+### 2 Админ смотрит окончание льгот: ФИО
+GET http://localhost:8080/pass?full_name=Петушкова Мария Васильевна
 
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: пол
+GET http://localhost:8080/pass?sex=ж
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: день рождения
+GET http://localhost:8080/pass?birthdate=23.05.1950
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: телефон
+GET http://localhost:8080/pass?phone=+75195623247
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: паспорт
+GET http://localhost:8080/pass?passport=22 10 632548
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: тип льготы
+GET http://localhost:8080/benefit_pass?type_benefit=Пенсионный
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: номер документа льготы
+GET http://localhost:8080/benefit_pass?number_document=561658435133482
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
+
+### 2 Админ смотрит окончание льгот: срок окончания льготы
+GET http://localhost:8080/benefit_pass?end=
+
+> {%
+client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+});
+ %}
 
 ### 3 Клиент может узнать уровень сложности программ
 GET http://localhost:8080/programmes?programme_id=1
@@ -57,7 +229,7 @@ GET http://localhost:8080/programmes?programme_id=1
      client.assert(response.body[0]['id_programme'] === 1, "id программы некорректен");
      client.assert(response.body[0]['name'] === "Суставная гимнастика", "Наименование программы некорректно");
      client.assert(response.body[0]['duration'] === "1 час", "Длительность программы некорректен");
-     client.assert(response.body[0]['discount'] === 10, "Уровень подготовки программы некорректен");
+     client.assert(response.body[0]['discount'] === "Не требует подготовки", "Уровень подготовки программы некорректен");
  });
  %}
 
