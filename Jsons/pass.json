@@ -3,39 +3,19 @@
 	"pass_id": 1,
 	"duration": "21.03.2021 - 21.03.2022",
 	"discount": "",
-	"customer": {
-		"customer_id": 1,
-		"full_name": "Кузнецова Маргарита Александровна",
-		"sex": "ж",
-		"birthdate": "15.11.1990",
-		"phone": "+79503215247",
-		"passport": "22 15 215846"
+	"customer_id": 1
 	}
 },
 {
 	"pass_id": 2,
 	"duration": "01.01.2021 - 01.01.2022",
 	"discount": "",
-	"customer": {
-		"customer_id": 2,
-		"full_name": "Кузнецов Максим Анатольевич",
-		"sex": "м",
-		"birthdate": "23.05.1992",
-		"phone": "+75195623247",
-		"passport": "20 11 211256"
-	}
+	"customer_id": 2
 },
 {
 	"pass_id": 3,
 	"duration": "06.05.2021 - 06.05.2023",
 	"discount": "10%",
-	"customer": {
-		"customer_id": 3,
-		"full_name": "Иванова Екатерина Александровна",
-		"sex": "ж",
-		"birthdate": "15.10.1970",
-		"phone": "+79503287247",
-		"passport": "20 33 249846"
-	}
+	"customer_id": 3
 }
 ]
