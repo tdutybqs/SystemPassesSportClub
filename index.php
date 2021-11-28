@@ -15,6 +15,10 @@ $pathToPasses = __DIR__."/Jsons/pass.json";
 $passesTxt = file_get_contents($pathToPasses);
 $passes = json_decode($passesTxt, true);
 
+$pathToPurchasedItems = __DIR__."/Jsons/purchased_item.json";
+$purchasedItemsTxt = file_get_contents($pathToPurchasedItems);
+$purchasedItems = json_decode($purchasedItemsTxt, true);
+
 if ('/benefit_pass' === $_SERVER['PATH_INFO']){
     $httpCode = 200;
     $result = [];
@@ -121,8 +125,33 @@ else if ('/pass' === $_SERVER['PATH_INFO']){
         }
     }
 }
-else if ('/passf' === $_SERVER['PATH_INFO']){
+else if ('/purchased_item' === $_SERVER['PATH_INFO']){
+    $httpCode = 200;
+    $result = [];
 
+    $customerIdToInfo = [];
+    foreach ($customers as $customerInfo){
+        $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
+    }
+
+    $purchasedItemToInfo = [];
+    foreach ($purchasedItems as $purchasedItemInfo){
+        $purchasedItemToInfo[$purchasedItemInfo['purchased_item_id']] = $purchasedItemInfo;
+    }
+
+    $passesIdToInfo = [];
+    foreach ($passes as $passInfo){
+        $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
+    }
+
+
+    foreach ($purchasedItems as $purchasedItem) {
+        if (array_key_exists("customer_id", $_GET)) {
+            $printThis = "" ;
+        }else{
+            $printThis = true;
+        }
+    }
 }
 else {
     //unsupported answer
