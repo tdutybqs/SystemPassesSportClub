@@ -85,7 +85,10 @@ GET http://localhost:8080/purchased_items?customer_id=1
      client.assert(response.body[0]['phone'] === "+79503215247", "Телефон клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
      client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
-
+     client.assert(response.body[0]['purchased_items']['purchased_item_id'] === 1, "id преобретённого товара некорректен");
+     client.assert(response.body[0]['purchased_items']['pass_id'] === 1, "id аьонемента некорректен");
+     client.assert(response.body[0]['purchased_items']['id_programme'] === 1, "id программы некорректен");
+     client.assert(response.body[0]['purchased_items']['price'] === 8500, "Цена программы некорректна");
  });
  %}
 
