@@ -45,4 +45,4 @@ GET http://localhost:8080/purchased_items?customer_id=1
     ж) ID абонемента.
     з) ID программы.
     и) Стоимость.
-    к) ID купленной программы.
+    к) ID купленной программы.?
