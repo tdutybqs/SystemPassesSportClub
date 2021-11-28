@@ -136,7 +136,7 @@ else if ('/purchased_item' === $_SERVER['PATH_INFO']){
 
     $purchasedItemToInfo = [];
     foreach ($purchasedItems as $purchasedItemInfo){
-        $purchasedItemToInfo[$purchasedItemInfo['purchased_item_id']] = $purchasedItemInfo;
+        $purchasedItemToInfo[$purchasedItemInfo['pass_id']] = $purchasedItemInfo;
     }
 
     $passesIdToInfo = [];
@@ -147,9 +147,29 @@ else if ('/purchased_item' === $_SERVER['PATH_INFO']){
 
     foreach ($purchasedItems as $purchasedItem) {
         if (array_key_exists("customer_id", $_GET)) {
-            $printThis = "" ;
+            $printThis = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'] == $_GET['customer_id'];
         }else{
             $printThis = true;
+        }
+        if ($printThis && array_key_exists("full_name", $_GET)){
+            $printThis = $passesIdToInfo[$_GET['full_name']]['pass_id'] === $purchasedItem['pass_id'];
+        }
+        if ($printThis && array_key_exists("sex", $_GET)){
+            $printThis = $passesIdToInfo[$_GET['sex']]['pass_id'] === $purchasedItem['pass_id'];
+        }
+        if ($printThis && array_key_exists("birthdate", $_GET)){
+            $printThis = $passesIdToInfo[$_GET['birthdate']]['pass_id'] === $purchasedItem['pass_id'];
+        }
+        if ($printThis && array_key_exists("phone", $_GET)){
+            $printThis = $passesIdToInfo[$_GET['phone']]['pass_id'] === $purchasedItem['pass_id'];
+        }
+        if ($printThis && array_key_exists("passport", $_GET)){
+            $printThis = $passesIdToInfo[$_GET['passport']]['pass_id'] === $purchasedItem['pass_id'];
+        }
+        if ($printThis){
+            $customerResult = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']];
+            $customerResult['purchased_items'] = $purchasedItem;
+            $result[] = $customerResult;
         }
     }
 }
