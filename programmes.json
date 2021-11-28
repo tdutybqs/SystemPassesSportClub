@@ -1,0 +1,42 @@
+{
+	"id_programme": 1,
+	"name": "Суставная гимнастика",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+},
+{
+	"id_programme": 2,
+	"name": "Аэробика",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+},
+{
+	"id_programme": 3,
+	"name": "Работа с весом",
+	"duration": "1 час",
+	"discount": "Требует подготовки"
+},
+{
+	"id_programme": 4,
+	"name": "Йога",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+},
+{
+	"id_programme": 5,
+	"name": "Йога в гамаках",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+},
+{
+	"id_programme": 6,
+	"name": "Растяжка",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+},
+{
+	"id_programme": 7,
+	"name": "Обучение плаванию (Дети)",
+	"duration": "1 час",
+	"discount": "Не требует подготовки"
+}

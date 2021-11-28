@@ -15,14 +15,25 @@ client.test("Администратор имеет возможность доб
  %}
 
 ###2 Админ смотрит окончание льгот
-GET http://localhost:8060/pass?customer_id=5
+GET http://localhost:8060/pass?customer_id=3
 
 > {%
-client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
-    client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
-    client.assert(response.body === "01.01.2022", "Ты не можешь знать ничего о клиентах! " +
-        "Было получено '" + response.body + "'.");
-});
+ client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 3, "id льготы некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок льготы некорректен");
+     client.assert(response.body[0]['discount'] === "10%", "Скидка льготы некорректна");
+     client.assert(response.body[0]['customer'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[0]['customer']['customer_id'] === 3, "id клиента некорректен");
+     client.assert(response.body[0]['customer']['full_name'] === "Иванова Екатерина Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['customer']['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['customer']['birthdate'] === "15.10.1970", "День рождения клиента некорректно");
+     client.assert(response.body[0]['customer']['phone'] === "+79503287247", "Номер клиента некорректен");
+     client.assert(response.body[0]['customer']['passport'] === "20 33 249846", "Паспорт клиента некорректен");
+ });
  %}
 
 
