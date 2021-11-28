@@ -1,12 +1,12 @@
 [
-	{
+{
 	"pass_id": 4,
 	"customer_id": 4,
 	"duration": "01.01.2021 - 01.01.2022",
 	"discount": "",
 	"type_benefit": "Детский",
 	"number_document": "58961195623247",
-	"duration": "23.05.2033"
+	"end": "23.05.2033"
 },
 {
 	"pass_id": 5,
@@ -15,6 +15,6 @@
 	"discount": "",
 	"type_benefit": "Пенсионный",
 	"number_document": "561658435133482",
-	"duration": ""
+	"end": ""
 }
-	]
+]
