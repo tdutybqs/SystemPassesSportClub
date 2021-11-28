@@ -15,7 +15,7 @@ client.test("Администратор имеет возможность доб
  %}
 
 ###2 Админ смотрит окончание льгот
-GET http://localhost:8060/pass?customer_id=3
+GET http://localhost:8080/pass?customer_id=3
 
 > {%
  client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -55,7 +55,7 @@ GET http://localhost:8080/programmes?programme_id=1
  %}
 
 ### 4 Клиент смотрит окончание абонемента
-GET http://localhost:8060/pass?pass_id=5
+GET http://localhost:8080/pass?pass_id=5
 
 > {%
  client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
