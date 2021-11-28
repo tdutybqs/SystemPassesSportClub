@@ -20,7 +20,7 @@ client.test("Администратор имеет возможность доб
  %}
 
 ### 2 Админ смотрит окончание льгот
-GET http://localhost:8080/pass?customer_id=5
+GET http://localhost:8080/benefit_pass?customer_id=5
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -44,9 +44,8 @@ client.test("Администратор имеет возможность отс
  %}
 
 
-
 ### 3 Клиент может узнать уровень сложности программ
-GET http://localhost:8080/programmes?programme_id=1
+GET http://localhost:8080/programmes?id_programme=1
 
 > {%
  client.test("Клиент может узнать уровень сложности программ", function (){
@@ -57,12 +56,12 @@ GET http://localhost:8080/programmes?programme_id=1
      client.assert(response.body[0]['id_programme'] === 1, "id программы некорректен");
      client.assert(response.body[0]['name'] === "Суставная гимнастика", "Наименование программы некорректно");
      client.assert(response.body[0]['duration'] === "1 час", "Длительность программы некорректен");
-     client.assert(response.body[0]['discount'] === 10, "Уровень подготовки программы некорректен");
+     client.assert(response.body[0]['discount'] === "Не требует подготовки", "Уровень подготовки программы некорректен");
  });
  %}
 
 ### 4 Клиент смотрит окончание абонемента
-GET http://localhost:8080/pass?pass_id=5
+GET http://localhost:8080/pass?pass_id=3
 
 > {%
  client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
