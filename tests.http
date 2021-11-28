@@ -20,8 +20,12 @@ GET http://localhost:8060/pass?customer_id=5
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
-    client.assert(response.body === "01.01.2022", "Ты не можешь знать ничего о клиентах! " +
-        "Было получено '" + response.body + "'.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body.hasOwnProperty("length") && response.body.length === 1,
+         "Ожидался 1 элемент. Было получено " + response.body.length + " элементов");
+    client.assert(response.body[0]["id"] === 10, "Ожидался id книги '10'. Было получено '" +
+         response.body[0]["id"] + "'.");
 });
  %}
 
