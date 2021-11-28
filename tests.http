@@ -73,9 +73,19 @@ GET http://localhost:8080/pass?pass_id=5
 GET http://localhost:8080/purchased_items?customer_id=1
 
 > {%
-client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ", function (){
-  client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
-  client.assert(response.body === "8500", "Ожидалось '8500'. Было получено '" + response.body + "'.");
-});
+ client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 1, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "15.11.1990", "День рождения клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+79503215247", "Телефон клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
+
+ });
  %}
 
