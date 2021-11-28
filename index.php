@@ -125,7 +125,7 @@ else if ('/pass' === $_SERVER['PATH_INFO']){
         }
     }
 }
-else if ('/purchased_item' === $_SERVER['PATH_INFO']){
+else if ('/purchased_items' === $_SERVER['PATH_INFO']){
     $httpCode = 200;
     $result = [];
 
@@ -145,6 +145,7 @@ else if ('/purchased_item' === $_SERVER['PATH_INFO']){
     }
 
 
+    $i = 0;
     foreach ($purchasedItems as $purchasedItem) {
         if (array_key_exists("customer_id", $_GET)) {
             $printThis = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'] == $_GET['customer_id'];
@@ -152,26 +153,30 @@ else if ('/purchased_item' === $_SERVER['PATH_INFO']){
             $printThis = true;
         }
         if ($printThis && array_key_exists("full_name", $_GET)){
-            $printThis = $passesIdToInfo[$_GET['full_name']]['pass_id'] === $purchasedItem['pass_id'];
+            $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['full_name'] === $_GET['full_name'];
         }
         if ($printThis && array_key_exists("sex", $_GET)){
-            $printThis = $passesIdToInfo[$_GET['sex']]['pass_id'] === $purchasedItem['pass_id'];
+            $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['sex'] === $_GET['sex'];
         }
         if ($printThis && array_key_exists("birthdate", $_GET)){
-            $printThis = $passesIdToInfo[$_GET['birthdate']]['pass_id'] === $purchasedItem['pass_id'];
+            $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['birthdate'] === $_GET['birthdate'];
         }
         if ($printThis && array_key_exists("phone", $_GET)){
-            $printThis = $passesIdToInfo[$_GET['phone']]['pass_id'] === $purchasedItem['pass_id'];
+            $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['phone'] === $_GET['phone'];
         }
         if ($printThis && array_key_exists("passport", $_GET)){
-            $printThis = $passesIdToInfo[$_GET['passport']]['pass_id'] === $purchasedItem['pass_id'];
+            $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['passport'] === $_GET['passport'];
         }
         if ($printThis){
-            $customerResult = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']];
-            $customerResult['purchased_items'] = $purchasedItem;
-            $result[] = $customerResult;
+            if ($i == 0){
+                $customerResult = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']];
+            }
+            //TODO дикий костыль. Явно чинить
+            $customerResult['purchased_items'][$i] = $purchasedItem;
+            $i++;
         }
     }
+    $result[] = $customerResult;
 }
 else {
     //unsupported answer
