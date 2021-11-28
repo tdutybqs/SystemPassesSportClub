@@ -9,19 +9,37 @@ level_of_training = 0
 > {%
 client.test("Администратор имеет возможность добавлять новые программы", function (){
     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
-    client.assert(response.body === "Прекрасная программа, продолжай в том же духе!", "Ожидалось 'Прекрасная программа, " +
-        "продолжай в том же духе!'. Было получено '" + response.body + "'.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1,
+         "Ожидался 1 элемент. " +
+         "Было получено " + response.body.length + " элементов"); // mb error, length
+     client.assert(response.body[0]["id"] === 10, "Ожидался id книги '10'. Было получено '" +
+         response.body[0]["id"] + "'.");
 });
  %}
 
-###2 Админ смотрит окончание льгот
-GET http://localhost:8060/pass?customer_id=5
+### 2 Админ смотрит окончание льгот
+GET http://localhost:8080/pass?customer_id=5
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
-    client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
-    client.assert(response.body === "01.01.2022", "Ты не можешь знать ничего о клиентах! " +
-        "Было получено '" + response.body + "'.");
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 5, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
+
+     client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
+     client.assert(response.body[0]['benefit']['number_document'] === "561658435133482", "Срок льготы некорректен");
+     client.assert(response.body[0]['benefit']['end'] === "", "Окончание льготы некорректно");
+     client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
+
 });
  %}
 
@@ -38,7 +56,7 @@ client.test("Клиент может узнать уровень сложнос�
  %}
 
 ### 4 Клиент смотрит окончание абонемента
-GET http://localhost:8060/pass?pass_id=5
+GET http://localhost:8080/pass?pass_id=5
 
 > {%
 client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
