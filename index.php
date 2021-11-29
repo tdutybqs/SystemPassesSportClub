@@ -19,16 +19,95 @@ $pathToPurchasedItems = __DIR__ . "/Jsons/purchased_item.json";
 $purchasedItemsTxt = file_get_contents($pathToPurchasedItems);
 $purchasedItems = json_decode($purchasedItemsTxt, true);
 
+$pathToLogs = __DIR__ . "/Logs/app.log";
+file_put_contents($pathToLogs, "Выполнен запрос на: " . urldecode($_SERVER['REQUEST_URI']) . "\n", FILE_APPEND);
+
+
 if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
     $httpCode = 200;
     $result = [];
-    // ХешМапа льгот
+
+    // Начинаем валидацию критериев поиска
+    if (array_key_exists("sex", $_GET) && false === is_string($_GET['sex'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect sex customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("birthdate", $_GET) && false === is_string($_GET['birthdate'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect birthdate customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("phone", $_GET) && false === is_string($_GET['phone'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect phone customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("passport", $_GET) && false === is_string($_GET['passport'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect passport customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_id customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("full_name", $_GET) && false === is_string($_GET['full_name'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect full_name customer'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("type_benefit", $_GET) && false === is_string($_GET['type_benefit'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect type_benefit'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("number_document", $_GET) && false === is_string($_GET['number_document'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect number_document benefit_pass'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("end", $_GET) && false === is_string($_GET['end'])){
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect end benefit_pass'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    // Конец валидации
+
+
     $benefitPassIdToInfo = [];
     foreach ($benefitPasses as $benefitPass) {
         $benefitPassIdToInfo[$benefitPass['pass_id']] = $benefitPass;
     }
 
-    // ХешМапа клиентов
     $customerIdToInfo = [];
     foreach ($customers as $customerInfo) {
         $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
@@ -45,7 +124,6 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['birthdate'] ===
                 $customerIdToInfo[$customer["customer_id"]]["birthdate"];
         }
-        // TODO вернуть плюсики
         if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("phone", $_GET)) {
             $benefitPassPurchaseReportsMeetSearchCriteria = $_GET["phone"] ===
                 $customerIdToInfo[$customer["customer_id"]]["phone"];
@@ -74,11 +152,8 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['end'] ===
                 $benefitPassIdToInfo[$customer["customer_id"]]["end"];
         }
-        // TODO удалить
-        if (!$benefitPassIdToInfo[$customer["customer_id"]]) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = false;
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria) {
+
+        if ($benefitPassPurchaseReportsMeetSearchCriteria && $benefitPassIdToInfo[$customer["customer_id"]] !== null) {
             $benefitPass = $benefitPassIdToInfo[$customer["customer_id"]];
             $customer["benefit"] = $benefitPass;
             unset($customer["benefit"]["pass_id"]);
@@ -140,7 +215,6 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
     foreach ($customers as $customerInfo) {
         $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
     }
-    // TODO pass.json добавлен 4 и 5 пасс ид
     $customerIdToPurchasedItem = [];
 
     $passesIdToInfo = [];
@@ -181,12 +255,10 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
                 $customerResult[$customerId] = true;
                 $result[] = $customerIdToInfo[$customerId];
             }
-            // мапа
             if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
                 $customerIdToPurchasedItem[$customerId] = [];
             }
             $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
-            // конец
         }
     }
     foreach ($result as &$customerInfo) {
