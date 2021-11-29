@@ -223,49 +223,102 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
     $passesIdToInfo = [];
     foreach ($passes as $passInfo) {
         $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
-    }
+        foreach ($purchasedItems as $purchasedItem) {
+            $customerId = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'];
 
-    foreach ($purchasedItems as $purchasedItem) {
-        $customerId = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'];
-
-        if (array_key_exists("customer_id", $_GET)) {
-            $printThis = $customerId === (int)$_GET['customer_id'];
-        } else {
-            $printThis = true;
-        }
-        if ($printThis && array_key_exists("customer_full_name", $_GET)) {
-            $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
-        }
-        if ($printThis && array_key_exists("customer_sex", $_GET)) {
-            $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
-        }
-        if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
-            $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
-        }
-        if ($printThis && array_key_exists("customer_phone", $_GET)) {
-            $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
-        }
-        if ($printThis && array_key_exists("customer_passport", $_GET)) {
-            $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
-        }
-
-
-        if ($printThis && array_key_exists('price', $_GET)) {
-            $printThis = $purchasedItem['price'] === (int)$_GET['price'];
-        }
-        if ($printThis) {
-            if (!array_key_exists($customerId, $customerResult)) {
-                $customerResult[$customerId] = true;
-                $result[] = $customerIdToInfo[$customerId];
+            // Начало валидации
+            $searchParamCorrect = true;
+            if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_id'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
             }
-            if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
-                $customerIdToPurchasedItem[$customerId] = [];
+            if (array_key_exists("customer_full_name", $_GET) && false === is_string($_GET['customer_full_name'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_full_name'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
             }
-            $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
+            if (array_key_exists("customer_sex", $_GET) && false === is_string($_GET['customer_sex'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_sex'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
+            }
+            if (array_key_exists("customer_birthdate", $_GET) && false === is_string($_GET['customer_birthdate'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_birthdate'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
+            }
+            if (array_key_exists("customer_phone", $_GET) && false === is_string($_GET['customer_phone'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_phone'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
+            }
+            if (array_key_exists("customer_passport", $_GET) && false === is_string($_GET['customer_passport'])) {
+                $result = [
+                    'status' => 'fail',
+                    'message' => 'incorrect customer_passport'
+                ];
+                $httpCode = 500;
+                $searchParamCorrect = false;
+            }
+            // Конец валидации
+            if ($searchParamCorrect) {
+
+            }
+            if (array_key_exists("customer_id", $_GET)) {
+                $printThis = $customerId === (int)$_GET['customer_id'];
+            } else {
+                $printThis = true;
+            }
+            if ($printThis && array_key_exists("customer_full_name", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
+            }
+            if ($printThis && array_key_exists("customer_sex", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
+            }
+            if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
+            }
+            if ($printThis && array_key_exists("customer_phone", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
+            }
+            if ($printThis && array_key_exists("customer_passport", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
+            }
+
+
+            if ($printThis && array_key_exists('price', $_GET)) {
+                $printThis = $purchasedItem['price'] === (int)$_GET['price'];
+            }
+            if ($printThis) {
+                if (!array_key_exists($customerId, $customerResult)) {
+                    $customerResult[$customerId] = true;
+                    $result[] = $customerIdToInfo[$customerId];
+                }
+                if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
+                    $customerIdToPurchasedItem[$customerId] = [];
+                }
+                $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
+            }
         }
-    }
-    foreach ($result as &$customerInfo) {
-        $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+        foreach ($result as &$customerInfo) {
+            $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+        }
     }
 } else {
     $httpCode = 404;

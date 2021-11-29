@@ -1,0 +1,89 @@
+### Тестирование ситуации, когда передали некорректный customer_id
+GET http://localhost:8080/purchased_items?customer_id[]=1
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_id", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_id", "Ожидалось 'incorrect customer_id'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}
+
+### Тестирование ситуации, когда передали некорректный customer_full_name
+GET http://localhost:8080/purchased_items?customer_full_name[]=Евгений
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_full_name", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_full_name", "Ожидалось 'incorrect customer_full_name'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}
+
+### Тестирование ситуации, когда передали некорректный customer_sex
+GET http://localhost:8080/purchased_items?customer_sex[]=м
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_full_name", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_sex", "Ожидалось 'incorrect customer_sex'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}
+
+### Тестирование ситуации, когда передали некорректный customer_birthdate
+GET http://localhost:8080/purchased_items?customer_birthdate[]=1
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_birthdate", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_birthdate", "Ожидалось 'incorrect customer_birthdate'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}
+
+### Тестирование ситуации, когда передали некорректный customer_phone
+GET http://localhost:8080/purchased_items?customer_phone[]=%2B3424234
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_birthdate", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_phone", "Ожидалось 'incorrect customer_phone'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}
+
+### Тестирование ситуации, когда передали некорректный customer_passport
+GET http://localhost:8080/purchased_items?customer_passport[]=3424234
+
+> {%
+ client.test("Тестирование ситуации, когда передали некорректный customer_passport", function (){
+    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "incorrect customer_passport", "Ожидалось 'incorrect customer_passport'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+ });
+ %}

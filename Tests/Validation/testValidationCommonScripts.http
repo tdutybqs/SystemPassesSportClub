@@ -1,0 +1,14 @@
+### Тестирование запроса без path
+GET http://localhost:8080/?pa=3
+
+> {%
+client.test("Тестирование запроса без path", function (){
+    client.assert(response.status === 404, "Был получен код '" + response.status + "', ожидалось 404.");
+    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
+         response.contentType.mimeType + "', ожидалось 'application/json'.");
+    client.assert(response.body["message"] === "unsupported request", "Ожидалось 'unsupported request'. " +
+        "Было получено '" + response.body["message"] + "'.");
+    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
+        response.body["status"] + "'.");
+});
+ %}
