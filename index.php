@@ -105,7 +105,7 @@ else if ('/programmes' === $_SERVER['PATH_INFO'])
             $printThis = $programme['discount'] == $_GET['discount'];
         }
         if ($printThis){
-            $result[] = $programme;
+            $result[] = $programme; // push
         }
     }
 }
@@ -180,7 +180,6 @@ else if ('/purchased_items' === $_SERVER['PATH_INFO']){
             if ($i == 0){
                 $customerResult = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']];
             }
-            //TODO дикий костыль. Явно чинить
             $customerResult['purchased_items'][$i] = $purchasedItem;
             $i++;
         }
