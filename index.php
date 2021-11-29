@@ -19,7 +19,7 @@ $pathToPurchasedItems = __DIR__."/Jsons/purchased_item.json";
 $purchasedItemsTxt = file_get_contents($pathToPurchasedItems);
 $purchasedItems = json_decode($purchasedItemsTxt, true);
 
-if ('/benefit_pass' === $_SERVER['PATH_INFO']){
+if ('/benefit_pass' === $_SERVER['PHP_SELF']){
     $httpCode = 200;
     $result = [];
     $benefitPassIdToInfo = [];
@@ -85,7 +85,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']){
         }
     }
 }
-else if ('/programmes' === $_SERVER['PATH_INFO'])
+else if ('/programmes' === $_SERVER['PHP_SELF'])
 {
     $httpCode = 200;
     $result = [];
@@ -110,7 +110,7 @@ else if ('/programmes' === $_SERVER['PATH_INFO'])
         }
     }
 }
-else if ('/pass' === $_SERVER['PATH_INFO']){
+else if ('/pass' === $_SERVER['PHP_SELF']){
     $httpCode = 200;
     $result = [];
 
@@ -131,7 +131,7 @@ else if ('/pass' === $_SERVER['PATH_INFO']){
         }
     }
 }
-else if ('/purchased_items' === $_SERVER['PATH_INFO']){
+else if ('/purchased_items' === $_SERVER['PHP_SELF']){
     $httpCode = 200;
     $result = [];
 
