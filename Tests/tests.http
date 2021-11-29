@@ -322,4 +322,3 @@ GET http://localhost:8080/purchased_items?customer_id=1
      client.assert(response.body[0]['purchased_items'][1]['price'] === 8000, "Цена программы некорректна");
  });
  %}
-
