@@ -13,7 +13,7 @@ client.test("Администратор имеет возможность доб
          response.contentType.mimeType + "', ожидалось 'application/json'.");
      client.assert(response.body.hasOwnProperty("length") && response.body.length === 1,
          "Ожидался 1 элемент. " +
-         "Было получено " + response.body.length + " элементов"); // mb error, length
+         "Было получено " + response.body.length + " элементов");
      client.assert(response.body[0]["id"] === 10, "Ожидался id книги '10'. Было получено '" +
          response.body[0]["id"] + "'.");
 });
@@ -32,7 +32,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -54,7 +54,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -76,7 +76,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -98,7 +98,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -108,7 +108,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: телефон.
-GET http://localhost:8080/benefit_pass?phone=75195623247
+GET http://localhost:8080/benefit_pass?phone=%2B75195623247
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -120,7 +120,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -142,7 +142,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -164,7 +164,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -186,7 +186,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -208,7 +208,7 @@ client.test("Администратор имеет возможность отс
      client.assert(response.body[0]['full_name'] === "Петушкова Мария Васильевна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "23.05.1950", "День рождения клиента некорректно");
-     client.assert(response.body[0]['phone'] === "75195623247", "Номер клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+75195623247", "Номер клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 10 632548", "Паспорт клиента некорректен");
      client.assert(response.body[0]['benefit'] !== undefined, "Нет данных о льготе");
      client.assert(response.body[0]['benefit']['type_benefit'] === "Пенсионный", "Тип льготы некорректен");
@@ -293,7 +293,7 @@ GET http://localhost:8080/purchased_items?customer_id=1
      client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
      client.assert(response.body[0]['birthdate'] === "15.11.1990", "День рождения клиента некорректен");
-     client.assert(response.body[0]['phone'] === "79503215245", "Телефон клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+79503215245", "Телефон клиента некорректен");
      client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
      client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
      client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 1, "id преобретённого товара некорректен");
