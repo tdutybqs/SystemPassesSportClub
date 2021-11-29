@@ -6,7 +6,7 @@ GET http://localhost:8080/pass?pass_id[]=3
     client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
     client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
          response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect pass_id", "Ожидалось 'incorrect pass_id'. " +
+    client.assert(response.body["message"] === "incorrect pass_id pass", "Ожидалось 'incorrect pass_id pass'. " +
         "Было получено '" + response.body["message"] + "'.");
     client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
         response.body["status"] + "'.");
@@ -21,22 +21,7 @@ GET http://localhost:8080/pass?duration[]=3
     client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
     client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
          response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect duration", "Ожидалось 'incorrect duration'. " +
-        "Было получено '" + response.body["message"] + "'.");
-    client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
-        response.body["status"] + "'.");
- });
- %}
-
-### Тестирование ситуации, когда передали некорректный customer_id
-GET http://localhost:8080/pass?customer_id[]=3
-
-> {%
- client.test("Тестирование ситуации, когда передали некорректный customer_id", function (){
-    client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
-    client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
-         response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect customer_id", "Ожидалось 'incorrect customer_id'. " +
+    client.assert(response.body["message"] === "incorrect duration pass", "Ожидалось 'incorrect duration pass'. " +
         "Было получено '" + response.body["message"] + "'.");
     client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
         response.body["status"] + "'.");

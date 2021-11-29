@@ -28,6 +28,8 @@ if ('/benefit_pass' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
+    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
+
     // Начинаем валидацию критериев поиска
     $searchParamCorrect = true;
     if (array_key_exists("sex", $_GET) && false === is_string($_GET['sex'])) {
@@ -167,9 +169,16 @@ if ('/benefit_pass' === $pathInfo) {
             }
         }
     }
+    if ($searchParamCorrect) {
+        file_put_contents($pathToLogs, 'Найдено result: ' . count($result) . "\n", FILE_APPEND);
+    } else {
+        file_put_contents($pathToLogs, 'Некорректные данные' . "\n", FILE_APPEND);
+    }
 } elseif ('/programmes' === $pathInfo) {
     $httpCode = 200;
     $result = [];
+
+    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
 
     //Начинаем валидацию критериев поиска 3 сценария
     $searchParamCorrect = true;
@@ -228,137 +237,188 @@ if ('/benefit_pass' === $pathInfo) {
             }
         }
     }
+    if ($searchParamCorrect) {
+        file_put_contents($pathToLogs, 'Найдено result: ' . count($result) . "\n", FILE_APPEND);
+    } else {
+        file_put_contents($pathToLogs, 'Некорректные данные' . "\n", FILE_APPEND);
+    }
 } elseif ('/pass' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
-    foreach ($passes as $pass) {
-        if (array_key_exists("pass_id", $_GET)) {
-            $printThis = $pass['pass_id'] === (int)$_GET['pass_id'];
-        } else {
-            $printThis = true;
+    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
+
+    // Начинаем валидацию критериев поиска 4 сценария
+    $searchParamCorrect = true;
+    if (array_key_exists("pass_id", $_GET) && false === is_string($_GET['pass_id'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect pass_id pass'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("duration", $_GET) && false === is_string($_GET['duration'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect duration pass'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("discount", $_GET) && false === is_string($_GET['discount'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect discount pass'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    // Конец валидации 4 сценария
+
+    if ($searchParamCorrect) {
+        foreach ($passes as $pass) {
+            if (array_key_exists("pass_id", $_GET)) {
+                $printThis = $pass['pass_id'] === (int)$_GET['pass_id'];
+            } else {
+                $printThis = true;
+            }
+            if ($printThis && array_key_exists("duration", $_GET)) {
+                $printThis = $pass['duration'] === $_GET['duration'];
+            }
+            if ($printThis && array_key_exists("customer_id", $_GET)) {
+                $printThis = $pass['customer_id'] === (int)$_GET['customer_id'];
+            }
+            if ($printThis) {
+                $result[] = $pass;
+            }
         }
-        if ($printThis && array_key_exists("duration", $_GET)) {
-            $printThis = $pass['duration'] === $_GET['duration'];
-        }
-        if ($printThis && array_key_exists("customer_id", $_GET)) {
-            $printThis = $pass['customer_id'] === (int)$_GET['customer_id'];
-        }
-        if ($printThis) {
-            $result[] = $pass;
-        }
+    }
+    if ($searchParamCorrect) {
+        file_put_contents($pathToLogs, 'Найдено result: ' . count($result) . "\n", FILE_APPEND);
+    } else {
+        file_put_contents($pathToLogs, 'Некорректные данные' . "\n", FILE_APPEND);
     }
 } else if ('/purchased_items' === $pathInfo) {
     $httpCode = 200;
     $result = [];
     $customerResult = [];
 
-    $customerIdToInfo = [];
-    foreach ($customers as $customerInfo) {
-        $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
-    }
-    $customerIdToPurchasedItem = [];
+    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
 
-    $passesIdToInfo = [];
-    foreach ($passes as $passInfo) {
-        $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
+    // Начало валидации
+    $searchParamCorrect = true;
+    if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_id'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_full_name", $_GET) && false === is_string($_GET['customer_full_name'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_full_name'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_sex", $_GET) && false === is_string($_GET['customer_sex'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_sex'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_birthdate", $_GET) && false === is_string($_GET['customer_birthdate'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_birthdate'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_phone", $_GET) && false === is_string($_GET['customer_phone'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_phone'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("customer_passport", $_GET) && false === is_string($_GET['customer_passport'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect customer_passport'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    // Конец валидации
+
+    if ($searchParamCorrect) {
+        $customerIdToInfo = [];
+        foreach ($customers as $customerInfo) {
+            $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
+        }
+        $customerIdToPurchasedItem = [];
+
+        $passesIdToInfo = [];
+        foreach ($passes as $passInfo) {
+            $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
+        }
         foreach ($purchasedItems as $purchasedItem) {
             $customerId = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'];
 
-            // Начало валидации
-            $searchParamCorrect = true;
-            if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_id'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if (array_key_exists("customer_id", $_GET)) {
+                $printThis = $customerId === (int)$_GET['customer_id'];
+            } else {
+                $printThis = true;
             }
-            if (array_key_exists("customer_full_name", $_GET) && false === is_string($_GET['customer_full_name'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_full_name'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if ($printThis && array_key_exists("customer_full_name", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
             }
-            if (array_key_exists("customer_sex", $_GET) && false === is_string($_GET['customer_sex'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_sex'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if ($printThis && array_key_exists("customer_sex", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
             }
-            if (array_key_exists("customer_birthdate", $_GET) && false === is_string($_GET['customer_birthdate'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_birthdate'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
             }
-            if (array_key_exists("customer_phone", $_GET) && false === is_string($_GET['customer_phone'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_phone'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if ($printThis && array_key_exists("customer_phone", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
             }
-            if (array_key_exists("customer_passport", $_GET) && false === is_string($_GET['customer_passport'])) {
-                $result = [
-                    'status' => 'fail',
-                    'message' => 'incorrect customer_passport'
-                ];
-                $httpCode = 500;
-                $searchParamCorrect = false;
+            if ($printThis && array_key_exists("customer_passport", $_GET)) {
+                $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
             }
-            // Конец валидации
-            if ($searchParamCorrect) {
-                if (array_key_exists("customer_id", $_GET)) {
-                    $printThis = $customerId === (int)$_GET['customer_id'];
-                } else {
-                    $printThis = true;
-                }
-                if ($printThis && array_key_exists("customer_full_name", $_GET)) {
-                    $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
-                }
-                if ($printThis && array_key_exists("customer_sex", $_GET)) {
-                    $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
-                }
-                if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
-                    $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
-                }
-                if ($printThis && array_key_exists("customer_phone", $_GET)) {
-                    $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
-                }
-                if ($printThis && array_key_exists("customer_passport", $_GET)) {
-                    $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
-                }
 
 
-                if ($printThis && array_key_exists('price', $_GET)) {
-                    $printThis = $purchasedItem['price'] === (int)$_GET['price'];
-                }
-                if ($printThis) {
-                    if (!array_key_exists($customerId, $customerResult)) {
-                        $customerResult[$customerId] = true;
-                        $result[] = $customerIdToInfo[$customerId];
-                    }
-                    if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
-                        $customerIdToPurchasedItem[$customerId] = [];
-                    }
-                    $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
-                }
+            if ($printThis && array_key_exists('price', $_GET)) {
+                $printThis = $purchasedItem['price'] === (int)$_GET['price'];
             }
-            foreach ($result as &$customerInfo) {
-                $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+            if ($printThis) {
+                if (!array_key_exists($customerId, $customerResult)) {
+                    $customerResult[$customerId] = true;
+                    $result[] = $customerIdToInfo[$customerId];
+                }
+                if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
+                    $customerIdToPurchasedItem[$customerId] = [];
+                }
+                $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
             }
         }
+        foreach ($result as &$customerInfo) {
+            $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+        }
+    }
+    if ($searchParamCorrect) {
+        file_put_contents($pathToLogs, 'Найдено result: ' . count($result) . "\n", FILE_APPEND);
+    } else {
+        file_put_contents($pathToLogs, 'Некорректные данные' . "\n", FILE_APPEND);
     }
 } else {
+    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
     $httpCode = 404;
     $result = [
         'message' => 'unsupported request',
