@@ -19,7 +19,7 @@ $pathToPurchasedItems = __DIR__."/Jsons/purchased_item.json";
 $purchasedItemsTxt = file_get_contents($pathToPurchasedItems);
 $purchasedItems = json_decode($purchasedItemsTxt, true);
 
-if ('/benefit_pass' === $_SERVER['PHP_SELF']){
+if ('/benefit_pass' === $_SERVER['PATH_INFO']){
     $httpCode = 200;
     $result = [];
     $benefitPassIdToInfo = [];
@@ -85,7 +85,7 @@ if ('/benefit_pass' === $_SERVER['PHP_SELF']){
         }
     }
 }
-else if ('/programmes' === $_SERVER['PHP_SELF'])
+else if ('/programmes' === $_SERVER['PATH_INFO'])
 {
     $httpCode = 200;
     $result = [];
@@ -110,7 +110,7 @@ else if ('/programmes' === $_SERVER['PHP_SELF'])
         }
     }
 }
-else if ('/pass' === $_SERVER['PHP_SELF']){
+else if ('/pass' === $_SERVER['PATH_INFO']){
     $httpCode = 200;
     $result = [];
 
@@ -131,7 +131,7 @@ else if ('/pass' === $_SERVER['PHP_SELF']){
         }
     }
 }
-else if ('/purchased_items' === $_SERVER['PHP_SELF']){
+else if ('/purchased_items' === $_SERVER['PATH_INFO']){
     $httpCode = 200;
     $result = [];
 
@@ -172,6 +172,9 @@ else if ('/purchased_items' === $_SERVER['PHP_SELF']){
         }
         if ($printThis && array_key_exists("passport", $_GET)){
             $printThis = $customerIdToInfo[$passesIdToInfo[$purchasedItem['pass_id']]['customer_id']]['passport'] === $_GET['passport'];
+        }
+        if (count($_GET) == 0){
+            $printThis = false;
         }
         if ($printThis){
             if ($i == 0){
