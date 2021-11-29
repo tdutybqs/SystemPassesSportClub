@@ -19,11 +19,12 @@ $pathToPurchasedItems = __DIR__ . "/Jsons/purchased_item.json";
 $purchasedItemsTxt = file_get_contents($pathToPurchasedItems);
 $purchasedItems = json_decode($purchasedItemsTxt, true);
 
+$pathInfo = array_key_exists("PATH_INFO", $_SERVER) && $_SERVER["PATH_INFO"] ? $_SERVER["PATH_INFO"] : '';
 $pathToLogs = __DIR__ . "/Logs/app.log";
 file_put_contents($pathToLogs, "Выполнен запрос на: " . urldecode($_SERVER['REQUEST_URI']) . "\n", FILE_APPEND);
 
 
-if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
+if ('/benefit_pass' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
@@ -166,7 +167,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             }
         }
     }
-} elseif ('/programmes' === $_SERVER['PATH_INFO']) {
+} elseif ('/programmes' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
@@ -189,7 +190,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             $result[] = $programme;
         }
     }
-} elseif ('/pass' === $_SERVER['PATH_INFO']) {
+} elseif ('/pass' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
@@ -209,7 +210,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             $result[] = $pass;
         }
     }
-} else if ('/purchased_items' === $_SERVER['PATH_INFO']) {
+} else if ('/purchased_items' === $pathInfo) {
     $httpCode = 200;
     $result = [];
     $customerResult = [];
@@ -278,46 +279,45 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
             }
             // Конец валидации
             if ($searchParamCorrect) {
-
-            }
-            if (array_key_exists("customer_id", $_GET)) {
-                $printThis = $customerId === (int)$_GET['customer_id'];
-            } else {
-                $printThis = true;
-            }
-            if ($printThis && array_key_exists("customer_full_name", $_GET)) {
-                $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
-            }
-            if ($printThis && array_key_exists("customer_sex", $_GET)) {
-                $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
-            }
-            if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
-                $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
-            }
-            if ($printThis && array_key_exists("customer_phone", $_GET)) {
-                $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
-            }
-            if ($printThis && array_key_exists("customer_passport", $_GET)) {
-                $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
-            }
-
-
-            if ($printThis && array_key_exists('price', $_GET)) {
-                $printThis = $purchasedItem['price'] === (int)$_GET['price'];
-            }
-            if ($printThis) {
-                if (!array_key_exists($customerId, $customerResult)) {
-                    $customerResult[$customerId] = true;
-                    $result[] = $customerIdToInfo[$customerId];
+                if (array_key_exists("customer_id", $_GET)) {
+                    $printThis = $customerId === (int)$_GET['customer_id'];
+                } else {
+                    $printThis = true;
                 }
-                if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
-                    $customerIdToPurchasedItem[$customerId] = [];
+                if ($printThis && array_key_exists("customer_full_name", $_GET)) {
+                    $printThis = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
                 }
-                $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
+                if ($printThis && array_key_exists("customer_sex", $_GET)) {
+                    $printThis = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
+                }
+                if ($printThis && array_key_exists("customer_birthdate", $_GET)) {
+                    $printThis = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
+                }
+                if ($printThis && array_key_exists("customer_phone", $_GET)) {
+                    $printThis = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
+                }
+                if ($printThis && array_key_exists("customer_passport", $_GET)) {
+                    $printThis = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
+                }
+
+
+                if ($printThis && array_key_exists('price', $_GET)) {
+                    $printThis = $purchasedItem['price'] === (int)$_GET['price'];
+                }
+                if ($printThis) {
+                    if (!array_key_exists($customerId, $customerResult)) {
+                        $customerResult[$customerId] = true;
+                        $result[] = $customerIdToInfo[$customerId];
+                    }
+                    if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
+                        $customerIdToPurchasedItem[$customerId] = [];
+                    }
+                    $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
+                }
             }
-        }
-        foreach ($result as &$customerInfo) {
-            $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+            foreach ($result as &$customerInfo) {
+                $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
+            }
         }
     }
 } else {
