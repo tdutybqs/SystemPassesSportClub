@@ -139,6 +139,7 @@ else if ('/purchased_items' === $_SERVER['PATH_INFO']){
         $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
     }
 
+    // TODO перепроверить мапу
     $purchasedItemToInfo = [];
     foreach ($purchasedItems as $purchasedItemInfo){
         $purchasedItemToInfo[$purchasedItemInfo['pass_id']] = $purchasedItemInfo;
@@ -149,7 +150,7 @@ else if ('/purchased_items' === $_SERVER['PATH_INFO']){
         $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
     }
 
-
+    // TODO тут начинается трешак
     $i = 0;
     foreach ($purchasedItems as $purchasedItem) {
         if (array_key_exists("customer_id", $_GET)) {
