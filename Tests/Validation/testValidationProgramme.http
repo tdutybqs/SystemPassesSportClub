@@ -21,7 +21,7 @@ GET http://localhost:8080/programmes?name[]=ИМЯ
     client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
     client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
          response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect name", "Ожидалось 'incorrect name'. " +
+    client.assert(response.body["message"] === "incorrect name programme", "Ожидалось 'incorrect name programme'. " +
         "Было получено '" + response.body["message"] + "'.");
     client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
         response.body["status"] + "'.");
@@ -36,7 +36,7 @@ GET http://localhost:8080/programmes?duration[]=1
     client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
     client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
          response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect duration", "Ожидалось 'incorrect duration'. " +
+    client.assert(response.body["message"] === "incorrect duration programme", "Ожидалось 'incorrect duration programme'. " +
         "Было получено '" + response.body["message"] + "'.");
     client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
         response.body["status"] + "'.");
@@ -44,14 +44,14 @@ GET http://localhost:8080/programmes?duration[]=1
  %}
 
 ### Тестирование ситуации, когда передали некорректный discount
-GET http://localhost:8080/programmes?discount[]=14%
+GET http://localhost:8080/programmes?discount[]=14
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный discount", function (){
     client.assert(response.status === 500, "Был получен код '" + response.status + "', ожидалось 500.");
     client.assert(response.contentType.mimeType === "application/json", "Было получено '" +
          response.contentType.mimeType + "', ожидалось 'application/json'.");
-    client.assert(response.body["message"] === "incorrect discount", "Ожидалось 'incorrect discount'. " +
+    client.assert(response.body["message"] === "incorrect discount programme", "Ожидалось 'incorrect discount programme'. " +
         "Было получено '" + response.body["message"] + "'.");
     client.assert(response.body["status"] === "fail", "Ожидался статус 'fail'. Было получено '" +
         response.body["status"] + "'.");

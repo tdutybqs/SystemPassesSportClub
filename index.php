@@ -171,23 +171,61 @@ if ('/benefit_pass' === $pathInfo) {
     $httpCode = 200;
     $result = [];
 
-    foreach ($programmes as $programme) {
-        if (array_key_exists("id_programme", $_GET)) {
-            $printThis = $programme['id_programme'] === (int)$_GET['id_programme'];
-        } else {
-            $printThis = true;
-        }
-        if ($printThis && array_key_exists("name", $_GET)) {
-            $printThis = $programme['name'] === $_GET['name'];
-        }
-        if ($printThis && array_key_exists("duration", $_GET)) {
-            $printThis = (string)$programme['duration'] === $_GET['duration'];
-        }
-        if ($printThis && array_key_exists("discount", $_GET)) {
-            $printThis = $programme['discount'] === $_GET['discount'];
-        }
-        if ($printThis) {
-            $result[] = $programme;
+    //Начинаем валидацию критериев поиска 3 сценария
+    $searchParamCorrect = true;
+    if (array_key_exists("id_programme", $_GET) && false === is_string($_GET['id_programme'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect id_programme'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("name", $_GET) && false === is_string($_GET['name'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect name programme'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("duration", $_GET) && false === is_string($_GET['duration'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect duration programme'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    if (array_key_exists("discount", $_GET) && false === is_string($_GET['discount'])) {
+        $result = [
+            'status' => 'fail',
+            'message' => 'incorrect discount programme'
+        ];
+        $httpCode = 500;
+        $searchParamCorrect = false;
+    }
+    // Конец валидации 3 сценария
+
+    if ($searchParamCorrect) {
+        foreach ($programmes as $programme) {
+            if (array_key_exists("id_programme", $_GET)) {
+                $printThis = $programme['id_programme'] === (int)$_GET['id_programme'];
+            } else {
+                $printThis = true;
+            }
+            if ($printThis && array_key_exists("name", $_GET)) {
+                $printThis = $programme['name'] === $_GET['name'];
+            }
+            if ($printThis && array_key_exists("duration", $_GET)) {
+                $printThis = (string)$programme['duration'] === $_GET['duration'];
+            }
+            if ($printThis && array_key_exists("discount", $_GET)) {
+                $printThis = $programme['discount'] === $_GET['discount'];
+            }
+            if ($printThis) {
+                $result[] = $programme;
+            }
         }
     }
 } elseif ('/pass' === $pathInfo) {
