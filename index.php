@@ -31,7 +31,6 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']){
     foreach ($customers as $customerInfo){
         $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
     }
-    // TODO Выводит людей с null
     foreach ($customers as $customer){
         if (array_key_exists("sex", $_GET)) {
             $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['sex'] ==
