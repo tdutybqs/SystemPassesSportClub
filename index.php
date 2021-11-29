@@ -28,7 +28,8 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
     $result = [];
 
     // Начинаем валидацию критериев поиска
-    if (array_key_exists("sex", $_GET) && false === is_string($_GET['sex'])){
+    $searchParamCorrect = true;
+    if (array_key_exists("sex", $_GET) && false === is_string($_GET['sex'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect sex customer'
@@ -36,7 +37,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("birthdate", $_GET) && false === is_string($_GET['birthdate'])){
+    if (array_key_exists("birthdate", $_GET) && false === is_string($_GET['birthdate'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect birthdate customer'
@@ -44,7 +45,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("phone", $_GET) && false === is_string($_GET['phone'])){
+    if (array_key_exists("phone", $_GET) && false === is_string($_GET['phone'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect phone customer'
@@ -52,7 +53,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("passport", $_GET) && false === is_string($_GET['passport'])){
+    if (array_key_exists("passport", $_GET) && false === is_string($_GET['passport'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect passport customer'
@@ -60,7 +61,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])){
+    if (array_key_exists("customer_id", $_GET) && false === is_string($_GET['customer_id'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect customer_id customer'
@@ -68,7 +69,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("full_name", $_GET) && false === is_string($_GET['full_name'])){
+    if (array_key_exists("full_name", $_GET) && false === is_string($_GET['full_name'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect full_name customer'
@@ -76,7 +77,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("type_benefit", $_GET) && false === is_string($_GET['type_benefit'])){
+    if (array_key_exists("type_benefit", $_GET) && false === is_string($_GET['type_benefit'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect type_benefit'
@@ -84,7 +85,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("number_document", $_GET) && false === is_string($_GET['number_document'])){
+    if (array_key_exists("number_document", $_GET) && false === is_string($_GET['number_document'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect number_document benefit_pass'
@@ -92,7 +93,7 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
         $httpCode = 500;
         $searchParamCorrect = false;
     }
-    if (array_key_exists("end", $_GET) && false === is_string($_GET['end'])){
+    if (array_key_exists("end", $_GET) && false === is_string($_GET['end'])) {
         $result = [
             'status' => 'fail',
             'message' => 'incorrect end benefit_pass'
@@ -102,65 +103,67 @@ if ('/benefit_pass' === $_SERVER['PATH_INFO']) {
     }
     // Конец валидации
 
+    if ($searchParamCorrect) {
 
-    $benefitPassIdToInfo = [];
-    foreach ($benefitPasses as $benefitPass) {
-        $benefitPassIdToInfo[$benefitPass['pass_id']] = $benefitPass;
-    }
-
-    $customerIdToInfo = [];
-    foreach ($customers as $customerInfo) {
-        $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
-    }
-
-    foreach ($customers as $customer) {
-        if (array_key_exists("sex", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['sex'] ===
-                $customerIdToInfo[$customer["customer_id"]]["sex"];
-        } else {
-            $benefitPassPurchaseReportsMeetSearchCriteria = true;
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("birthdate", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['birthdate'] ===
-                $customerIdToInfo[$customer["customer_id"]]["birthdate"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("phone", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET["phone"] ===
-                $customerIdToInfo[$customer["customer_id"]]["phone"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("passport", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['passport'] ===
-                $customerIdToInfo[$customer["customer_id"]]["passport"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("customer_id", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = (int)$_GET['customer_id'] ===
-                $benefitPassIdToInfo[$customer["customer_id"]]["customer_id"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("full_name", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['full_name'] ===
-                $customer["full_name"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("type_benefit", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['type_benefit'] ===
-                $benefitPassIdToInfo[$customer["customer_id"]]["type_benefit"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("number_document", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['number_document'] ===
-                $benefitPassIdToInfo[$customer["customer_id"]]["number_document"];
-        }
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("end", $_GET)) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['end'] ===
-                $benefitPassIdToInfo[$customer["customer_id"]]["end"];
+        $benefitPassIdToInfo = [];
+        foreach ($benefitPasses as $benefitPass) {
+            $benefitPassIdToInfo[$benefitPass['pass_id']] = $benefitPass;
         }
 
-        if ($benefitPassPurchaseReportsMeetSearchCriteria && $benefitPassIdToInfo[$customer["customer_id"]] !== null) {
-            $benefitPass = $benefitPassIdToInfo[$customer["customer_id"]];
-            $customer["benefit"] = $benefitPass;
-            unset($customer["benefit"]["pass_id"]);
-            unset($customer["benefit"]["discount"]);
-            unset($customer["benefit"]["customer_id"]);
-            unset($customer["benefit"]["duration"]);
-            $result[] = $customer;
+        $customerIdToInfo = [];
+        foreach ($customers as $customerInfo) {
+            $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
+        }
+
+        foreach ($customers as $customer) {
+            if (array_key_exists("sex", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['sex'] ===
+                    $customerIdToInfo[$customer["customer_id"]]["sex"];
+            } else {
+                $benefitPassPurchaseReportsMeetSearchCriteria = true;
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("birthdate", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['birthdate'] ===
+                    $customerIdToInfo[$customer["customer_id"]]["birthdate"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("phone", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET["phone"] ===
+                    $customerIdToInfo[$customer["customer_id"]]["phone"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("passport", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['passport'] ===
+                    $customerIdToInfo[$customer["customer_id"]]["passport"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("customer_id", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = (int)$_GET['customer_id'] ===
+                    $benefitPassIdToInfo[$customer["customer_id"]]["customer_id"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("full_name", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['full_name'] ===
+                    $customer["full_name"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("type_benefit", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['type_benefit'] ===
+                    $benefitPassIdToInfo[$customer["customer_id"]]["type_benefit"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("number_document", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['number_document'] ===
+                    $benefitPassIdToInfo[$customer["customer_id"]]["number_document"];
+            }
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("end", $_GET)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['end'] ===
+                    $benefitPassIdToInfo[$customer["customer_id"]]["end"];
+            }
+
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && $benefitPassIdToInfo[$customer["customer_id"]] !== null) {
+                $benefitPass = $benefitPassIdToInfo[$customer["customer_id"]];
+                $customer["benefit"] = $benefitPass;
+                unset($customer["benefit"]["pass_id"]);
+                unset($customer["benefit"]["discount"]);
+                unset($customer["benefit"]["customer_id"]);
+                unset($customer["benefit"]["duration"]);
+                $result[] = $customer;
+            }
         }
     }
 } elseif ('/programmes' === $_SERVER['PATH_INFO']) {
