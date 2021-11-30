@@ -397,6 +397,15 @@ if ('/benefit_pass' === $pathInfo) {
             if ($printThis && array_key_exists('price', $_GET)) {
                 $printThis = $purchasedItem['price'] === (int)$_GET['price'];
             }
+            if ($printThis && array_key_exists('purchased_item_id', $_GET)) {
+                $printThis = $purchasedItem['purchased_item_id'] === (int)$_GET['purchased_item_id'];
+            }
+            if ($printThis && array_key_exists('pass_id', $_GET)) {
+                $printThis = $purchasedItem['pass_id'] === (int)$_GET['pass_id'];
+            }
+            if ($printThis && array_key_exists('id_programme', $_GET)) {
+                $printThis = $purchasedItem['id_programme'] === (int)$_GET['id_programme'];
+            }
             if ($printThis) {
                 if (!array_key_exists($customerId, $customerResult)) {
                     $customerResult[$customerId] = true;
