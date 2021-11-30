@@ -418,7 +418,7 @@ if ('/benefit_pass' === $pathInfo) {
         file_put_contents($pathToLogs, 'Некорректные данные' . "\n", FILE_APPEND);
     }
 } else {
-    file_put_contents($pathToLogs, 'Переход на: ' . urldecode($pathInfo) . "\n", FILE_APPEND);
+    file_put_contents($pathToLogs, "Переход на: /\n", FILE_APPEND);
     $httpCode = 404;
     $result = [
         'message' => 'unsupported request',
