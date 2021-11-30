@@ -2,7 +2,7 @@
 $pathToBenefitPass = __DIR__ . "/Jsons/benefit_pass.json";
 $benefitPassTxt = file_get_contents($pathToBenefitPass);
 $benefitPasses = json_decode($benefitPassTxt, true);
-// test
+
 $pathToCustomers = __DIR__ . "/Jsons/customers.json";
 $customersTxt = file_get_contents($pathToCustomers);
 $customers = json_decode($customersTxt, true);
