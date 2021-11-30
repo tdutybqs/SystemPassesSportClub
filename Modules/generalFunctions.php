@@ -31,7 +31,6 @@ function paramTypeValidation(string $paramName, array $params, string $errMsg): 
  * Логирует текстовое сообщение
  *
  * @param string $errMsg - логируемое сообщение
- * @param string $path - путь до файла лог
  */
 function logger(string $errMsg): void
 {
