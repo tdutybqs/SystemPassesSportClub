@@ -43,7 +43,7 @@ function paramTypeValidation(array $validateParameters, array $params): ?array
  *
  * @param string $errMsg - логируемое сообщение
  */
-function logger(string $errMsg): void
+function loggerInFile(string $errMsg): void
 {
     file_put_contents(__DIR__."/../Logs/app.log", $errMsg . "\n", FILE_APPEND);
 }
