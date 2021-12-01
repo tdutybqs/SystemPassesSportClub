@@ -16,15 +16,26 @@ function loadData(string $sourcePath): array
 /**
  * Валидация входяшщих параметров на соответствие заданному типу
  *
- * @param string $paramName - имя валидируемого параметра
+ * @param array $validateParameters - валидируемые параметры, ключ имя параметра, а значение это текст сообщения об ошибке
  * @param array $params - все множество параметров
- * @param string $errMsg - сообщение об ошибке
+ * @return array - возвращает массив с сообщением об ошибке, иначе null
  */
-function paramTypeValidation(string $paramName, array $params, string $errMsg): void
+function paramTypeValidation(array $validateParameters, array $params): ?array
 {
-    if (array_key_exists($paramName, $params) && false === is_string($_GET[$paramName])) {
-        errorHandling('fail', $errMsg, 500);
+    $result = null;
+    foreach ($validateParameters as $paramName => $errMsg) {
+        if (array_key_exists($paramName, $params) && false === is_string($params[$paramName])) {
+            $result = [
+                'httpCode' => 500,
+                'result' => [
+                    'status' => 'fail',
+                    'message' => $errMsg,
+                ]
+            ];
+            break;
+        }
     }
+    return $result;
 }
 
 /**
@@ -47,19 +58,4 @@ function render(int $httpCode, array $data): void
     http_response_code($httpCode);
     echo json_encode($data);
     exit();
-}
-
-/**
- * @param string $status - статус ответа
- * @param string $message - сообщение о сбое
- * @param int $httpCode - http код
- */
-function errorHandling(string $status, string $message, int $httpCode): void
-{
-    $result = [
-        'status' => $status,
-        'message' => $message
-    ];
-    logger($message);
-    render($httpCode, $result);
 }
