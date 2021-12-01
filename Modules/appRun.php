@@ -74,42 +74,42 @@ function findBenefitPass(array $request, callable $logger): array
         }
 
         foreach ($customers as $customer) {
-            if (array_key_exists("sex", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['sex'] ===
+            if (array_key_exists("sex", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['sex'] ===
                     $customerIdToInfo[$customer["customer_id"]]["sex"];
             } else {
                 $benefitPassPurchaseReportsMeetSearchCriteria = true;
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("birthdate", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['birthdate'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("birthdate", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['birthdate'] ===
                     $customerIdToInfo[$customer["customer_id"]]["birthdate"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("phone", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET["phone"] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("phone", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request["phone"] ===
                     $customerIdToInfo[$customer["customer_id"]]["phone"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("passport", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['passport'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("passport", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['passport'] ===
                     $customerIdToInfo[$customer["customer_id"]]["passport"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("customer_id", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = (int)$_GET['customer_id'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("customer_id", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = (int)$request['customer_id'] ===
                     $benefitPassIdToInfo[$customer["customer_id"]]["customer_id"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("full_name", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['full_name'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("full_name", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['full_name'] ===
                     $customer["full_name"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("type_benefit", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['type_benefit'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("type_benefit", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['type_benefit'] ===
                     $benefitPassIdToInfo[$customer["customer_id"]]["type_benefit"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("number_document", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['number_document'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("number_document", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['number_document'] ===
                     $benefitPassIdToInfo[$customer["customer_id"]]["number_document"];
             }
-            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("end", $_GET)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = $_GET['end'] ===
+            if ($benefitPassPurchaseReportsMeetSearchCriteria && array_key_exists("end", $request)) {
+                $benefitPassPurchaseReportsMeetSearchCriteria = $request['end'] ===
                     $benefitPassIdToInfo[$customer["customer_id"]]["end"];
             }
 
@@ -153,21 +153,21 @@ function findProgrammes(array $request, callable $logger): array
         'discount' => 'incorrect discount programme',
     ];
 
-    if (null === ($result = paramTypeValidation($paramsValidation, $_GET))) {
+    if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($programmes as $programme) {
-            if (array_key_exists("id_programme", $_GET)) {
-                $searchCriteriaMet = $programme['id_programme'] === (int)$_GET['id_programme'];
+            if (array_key_exists("id_programme", $request)) {
+                $searchCriteriaMet = $programme['id_programme'] === (int)$request['id_programme'];
             } else {
                 $searchCriteriaMet = true;
             }
-            if ($searchCriteriaMet && array_key_exists("name", $_GET)) {
-                $searchCriteriaMet = $programme['name'] === $_GET['name'];
+            if ($searchCriteriaMet && array_key_exists("name", $request)) {
+                $searchCriteriaMet = $programme['name'] === $request['name'];
             }
-            if ($searchCriteriaMet && array_key_exists("duration", $_GET)) {
-                $searchCriteriaMet = (string)$programme['duration'] === $_GET['duration'];
+            if ($searchCriteriaMet && array_key_exists("duration", $request)) {
+                $searchCriteriaMet = (string)$programme['duration'] === $request['duration'];
             }
-            if ($searchCriteriaMet && array_key_exists("discount", $_GET)) {
-                $searchCriteriaMet = $programme['discount'] === $_GET['discount'];
+            if ($searchCriteriaMet && array_key_exists("discount", $request)) {
+                $searchCriteriaMet = $programme['discount'] === $request['discount'];
             }
             if ($searchCriteriaMet) {
                 $findProgrammes[] = $programme;
@@ -201,21 +201,21 @@ function findPass(array $request, callable $logger): array
         'duration' => 'incorrect duration pass',
         'discount' => 'incorrect discount pass',
     ];
-    if (null === ($result = paramTypeValidation($paramsValidation, $_GET))) {
+    if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($passes as $pass) {
-            if (array_key_exists("pass_id", $_GET)) {
-                $searchCriteriaMet = $pass['pass_id'] === (int)$_GET['pass_id'];
+            if (array_key_exists("pass_id", $request)) {
+                $searchCriteriaMet = $pass['pass_id'] === (int)$request['pass_id'];
             } else {
                 $searchCriteriaMet = true;
             }
-            if ($searchCriteriaMet && array_key_exists("duration", $_GET)) {
-                $searchCriteriaMet = $pass['duration'] === $_GET['duration'];
+            if ($searchCriteriaMet && array_key_exists("duration", $request)) {
+                $searchCriteriaMet = $pass['duration'] === $request['duration'];
             }
-            if ($searchCriteriaMet && array_key_exists("customer_id", $_GET)) {
-                $searchCriteriaMet = $pass['customer_id'] === (int)$_GET['customer_id'];
+            if ($searchCriteriaMet && array_key_exists("customer_id", $request)) {
+                $searchCriteriaMet = $pass['customer_id'] === (int)$request['customer_id'];
             }
-            if ($searchCriteriaMet && array_key_exists("discount", $_GET)) {
-                $searchCriteriaMet = $pass['discount'] === $_GET['discount'];
+            if ($searchCriteriaMet && array_key_exists("discount", $request)) {
+                $searchCriteriaMet = $pass['discount'] === $request['discount'];
             }
             if ($searchCriteriaMet) {
                 $findPasses[] = $pass;
@@ -260,7 +260,7 @@ function findPurchasedItems(array $request, callable $logger): array
         'pass_id' => 'incorrect pass_id',
         'id_programme' => 'incorrect id_programme',
     ];
-    if (null === ($result = paramTypeValidation($paramsValidation, $_GET))) {
+    if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         $customerIdToInfo = [];
         foreach ($customers as $customerInfo) {
             $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
@@ -275,39 +275,39 @@ function findPurchasedItems(array $request, callable $logger): array
         foreach ($purchasedItems as $purchasedItem) {
             $customerId = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'];
 
-            if (array_key_exists("customer_id", $_GET)) {
-                $searchCriteriaMet = $customerId === (int)$_GET['customer_id'];
+            if (array_key_exists("customer_id", $request)) {
+                $searchCriteriaMet = $customerId === (int)$request['customer_id'];
             } else {
                 $searchCriteriaMet = true;
             }
-            if ($searchCriteriaMet && array_key_exists("customer_full_name", $_GET)) {
-                $searchCriteriaMet = $customerIdToInfo[$customerId]['full_name'] === $_GET['customer_full_name'];
+            if ($searchCriteriaMet && array_key_exists("customer_full_name", $request)) {
+                $searchCriteriaMet = $customerIdToInfo[$customerId]['full_name'] === $request['customer_full_name'];
             }
-            if ($searchCriteriaMet && array_key_exists("customer_sex", $_GET)) {
-                $searchCriteriaMet = $customerIdToInfo[$customerId]['sex'] === $_GET['customer_sex'];
+            if ($searchCriteriaMet && array_key_exists("customer_sex", $request)) {
+                $searchCriteriaMet = $customerIdToInfo[$customerId]['sex'] === $request['customer_sex'];
             }
-            if ($searchCriteriaMet && array_key_exists("customer_birthdate", $_GET)) {
-                $searchCriteriaMet = $customerIdToInfo[$customerId]['birthdate'] === $_GET['customer_birthdate'];
+            if ($searchCriteriaMet && array_key_exists("customer_birthdate", $request)) {
+                $searchCriteriaMet = $customerIdToInfo[$customerId]['birthdate'] === $request['customer_birthdate'];
             }
-            if ($searchCriteriaMet && array_key_exists("customer_phone", $_GET)) {
-                $searchCriteriaMet = $customerIdToInfo[$customerId]['phone'] === $_GET['customer_phone'];
+            if ($searchCriteriaMet && array_key_exists("customer_phone", $request)) {
+                $searchCriteriaMet = $customerIdToInfo[$customerId]['phone'] === $request['customer_phone'];
             }
-            if ($searchCriteriaMet && array_key_exists("customer_passport", $_GET)) {
-                $searchCriteriaMet = $customerIdToInfo[$customerId]['passport'] === $_GET['customer_passport'];
+            if ($searchCriteriaMet && array_key_exists("customer_passport", $request)) {
+                $searchCriteriaMet = $customerIdToInfo[$customerId]['passport'] === $request['customer_passport'];
             }
 
 
-            if ($searchCriteriaMet && array_key_exists('price', $_GET)) {
-                $searchCriteriaMet = $purchasedItem['price'] === (int)$_GET['price'];
+            if ($searchCriteriaMet && array_key_exists('price', $request)) {
+                $searchCriteriaMet = $purchasedItem['price'] === (int)$request['price'];
             }
-            if ($searchCriteriaMet && array_key_exists('purchased_item_id', $_GET)) {
-                $searchCriteriaMet = $purchasedItem['purchased_item_id'] === (int)$_GET['purchased_item_id'];
+            if ($searchCriteriaMet && array_key_exists('purchased_item_id', $request)) {
+                $searchCriteriaMet = $purchasedItem['purchased_item_id'] === (int)$request['purchased_item_id'];
             }
-            if ($searchCriteriaMet && array_key_exists('pass_id', $_GET)) {
-                $searchCriteriaMet = $purchasedItem['pass_id'] === (int)$_GET['pass_id'];
+            if ($searchCriteriaMet && array_key_exists('pass_id', $request)) {
+                $searchCriteriaMet = $purchasedItem['pass_id'] === (int)$request['pass_id'];
             }
-            if ($searchCriteriaMet && array_key_exists('id_programme', $_GET)) {
-                $searchCriteriaMet = $purchasedItem['id_programme'] === (int)$_GET['id_programme'];
+            if ($searchCriteriaMet && array_key_exists('id_programme', $request)) {
+                $searchCriteriaMet = $purchasedItem['id_programme'] === (int)$request['id_programme'];
             }
             if ($searchCriteriaMet) {
                 if (!array_key_exists($customerId, $customerResult)) {
