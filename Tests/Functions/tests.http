@@ -20,7 +20,7 @@
 # %}
 
 ### 2 Админ смотрит окончание льгот: id
-GET http://localhost:8080/benefit_pass?customer_id=5
+GET http://localhost:8060/benefit_pass?customer_id=5
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -42,7 +42,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: ФИО
-GET http://localhost:8080/benefit_pass?full_name=Петушкова Мария Васильевна
+GET http://localhost:8060/benefit_pass?full_name=Петушкова Мария Васильевна
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -64,7 +64,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: пол.
-GET http://localhost:8080/benefit_pass?sex=ж
+GET http://localhost:8060/benefit_pass?sex=ж
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -86,7 +86,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: день рождения
-GET http://localhost:8080/benefit_pass?birthdate=23.05.1950
+GET http://localhost:8060/benefit_pass?birthdate=23.05.1950
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -108,7 +108,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: телефон.
-GET http://localhost:8080/benefit_pass?phone=%2B75195623247
+GET http://localhost:8060/benefit_pass?phone=%2B75195623247
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -130,7 +130,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: паспорт
-GET http://localhost:8080/benefit_pass?passport=22 10 632548
+GET http://localhost:8060/benefit_pass?passport=22 10 632548
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -152,7 +152,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: тип льготы
-GET http://localhost:8080/benefit_pass?type_benefit=Пенсионный
+GET http://localhost:8060/benefit_pass?type_benefit=Пенсионный
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -174,7 +174,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: номер документа льготы
-GET http://localhost:8080/benefit_pass?number_document=561658435133482
+GET http://localhost:8060/benefit_pass?number_document=561658435133482
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -196,7 +196,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 2 Админ смотрит окончание льгот: срок окончания льготы.
-GET http://localhost:8080/benefit_pass?end=
+GET http://localhost:8060/benefit_pass?end=
 
 > {%
 client.test("Администратор имеет возможность отслеживать срок окончания действия льгот у пользователей", function (){
@@ -218,7 +218,7 @@ client.test("Администратор имеет возможность отс
  %}
 
 ### 3 Клиент может узнать уровень сложности программ
-GET http://localhost:8080/programmes?id_programme=1
+GET http://localhost:8060/programmes?id_programme=1
 
 > {%
  client.test("Клиент может узнать уровень сложности программ", function (){
@@ -234,7 +234,7 @@ GET http://localhost:8080/programmes?id_programme=1
  %}
 
 ### 4 Клиент смотрит окончание абонемента
-GET http://localhost:8080/pass?pass_id=3
+GET http://localhost:8060/pass?pass_id=3
 
 > {%
  client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
@@ -250,7 +250,7 @@ GET http://localhost:8080/pass?pass_id=3
 
 
 ### 4 Клиент смотрит окончание абонемента - срок
-GET http://localhost:8080/pass?duration=06.05.2021 - 06.05.2023
+GET http://localhost:8060/pass?duration=06.05.2021 - 06.05.2023
 
 > {%
  client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
@@ -273,7 +273,7 @@ GET http://localhost:8080/pass?duration=06.05.2021 - 06.05.2023
  %}
 
 ### 4 Клиент смотрит окончание абонемента - id пользователя
-GET http://localhost:8080/pass?customer_id=3
+GET http://localhost:8060/pass?customer_id=3
 
 > {%
  client.test("Клиент имеет возможность отслеживать срок окончания действия своего абонемента", function (){
@@ -297,7 +297,7 @@ GET http://localhost:8080/pass?customer_id=3
 
 
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ
-GET http://localhost:8080/purchased_items?customer_id=1
+GET http://localhost:8060/purchased_items?customer_id=1
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ", function (){
@@ -324,7 +324,7 @@ GET http://localhost:8080/purchased_items?customer_id=1
  %}
 
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ
-GET http://localhost:8080/purchased_items?price=8000
+GET http://localhost:8060/purchased_items?price=8000
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ", function (){
@@ -361,37 +361,29 @@ GET http://localhost:8080/purchased_items?price=8000
      client.assert(response.body[2]['purchased_items'] !== undefined, "Нет данных о клиенте");
 
      client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['purchased_item_id'] === 5, "id преобретённого товара некорректен");
      client.assert(response.body[1]['purchased_items'][1]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['pass_id'] === 1, "id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['pass_id'] === 5, "id преобретённого товара некорректен");
      client.assert(response.body[1]['purchased_items'][1]['pass_id'] === 3, "id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['pass_id'] === 2, "id преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['id_programme'] === 4, "id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['id_programme'] === 1, "id преобретённого товара некорректен");
      client.assert(response.body[1]['purchased_items'][1]['id_programme'] === 5, "id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['id_programme'] === 1, "id преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
      client.assert(response.body[1]['purchased_items'][1]['price'] === 8000, "id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
  });
  %}
 
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ
-GET http://localhost:8080/purchased_items?price=8000&purchased_item_id=2
+GET http://localhost:8060/purchased_items?price=8000&purchased_item_id=2
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ", function (){
@@ -428,27 +420,19 @@ GET http://localhost:8080/purchased_items?price=8000&purchased_item_id=2
      client.assert(response.body[1]['purchased_items'] !== undefined, "Нет данных о клиенте");
 
      client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['pass_id'] === 1, "pass_id преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['pass_id'] === 2, "pass_id преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['pass_id'] === 3, "pass_id преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['id_programme'] === 4, "id_programme преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['id_programme'] === 1, "id_programme преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['id_programme'] === 5, "id_programme преобретённого товара некорректен");
 
      client.assert(response.body[0]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
-
      client.assert(response.body[1]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
-
      client.assert(response.body[2]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
  });
  %}

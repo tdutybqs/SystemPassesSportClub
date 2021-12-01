@@ -16,15 +16,31 @@ function loadData(string $sourcePath): array
 /**
  * Валидация входяшщих параметров на соответствие заданному типу
  *
- * @param string $paramName - имя валидируемого параметра
+ * @param array $validateParameters - валидируемые параметры. ключ имя параметраб а значение - это текст сообщения об ошибке
  * @param array $params - все множество параметров
- * @param string $errMsg - сообщение об ошибке
+ *
+ * @return array
  */
-function paramTypeValidation(string $paramName, array $params, string $errMsg): void
+function paramTypeValidation(array $validateParameters, array $params):?array
 {
-    if (array_key_exists($paramName, $params) && false === is_string($_GET[$paramName])) {
-        errorHandling('fail', $errMsg, 500);
+//    if (array_key_exists($paramName, $params) && false === is_string($_GET[$paramName])) {
+//        errorHandling('fail', $errMsg, 500);
+//    }
+    $result = null;
+    foreach ($validateParameters as $paramName => $errMsg){
+        if(array_key_exists($paramName, $params) && false === is_string($params[$paramName])){
+            $result = [
+                'httpCode' => 500,
+                'result' => [
+                    'status' => 'fail',
+                    'message' => $errMsg,
+                ],
+
+            ];
+            break;
+        }
     }
+    return $result;
 }
 
 /**
