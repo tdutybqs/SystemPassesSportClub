@@ -5,12 +5,13 @@
  *
  * @param string $sourcePath - путь до файла
  * @return array
+ * @throws JsonException
  */
 function loadData(string $sourcePath): array
 {
     $pathToFile = $sourcePath;
     $content = file_get_contents($pathToFile);
-    return json_decode($content, true);
+    return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 }
 
 /**
@@ -45,17 +46,18 @@ function paramTypeValidation(array $validateParameters, array $params): ?array
  */
 function loggerInFile(string $errMsg): void
 {
-    file_put_contents(__DIR__."/../Logs/app.log", $errMsg . "\n", FILE_APPEND);
+    file_put_contents(__DIR__ . "/../../Logs/app.log", $errMsg . "\n", FILE_APPEND);
 }
 
 /**
  * @param int $httpCode - http код
  * @param array $data - данные, которые мы хотим отобразить
+ * @throws JsonException
  */
 function render(int $httpCode, array $data): void
 {
     header('Content-Type: application/json');
     http_response_code($httpCode);
-    echo json_encode($data);
+    echo json_encode($data, JSON_THROW_ON_ERROR);
     exit();
 }

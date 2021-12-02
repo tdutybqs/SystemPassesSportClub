@@ -1,4 +1,3 @@
-
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: customer_id
 GET http://localhost:8080/purchased_items?customer_id=1
 
