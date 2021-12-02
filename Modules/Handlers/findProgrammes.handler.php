@@ -26,20 +26,7 @@ return static function (array $request, callable $logger): array
 
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($programmes as $programme) {
-            if (array_key_exists("id_programme", $request)) {
-                $searchCriteriaMet = $programme['id_programme'] === (int)$request['id_programme'];
-            } else {
-                $searchCriteriaMet = true;
-            }
-            if ($searchCriteriaMet && array_key_exists("name", $request)) {
-                $searchCriteriaMet = $programme['name'] === $request['name'];
-            }
-            if ($searchCriteriaMet && array_key_exists("duration", $request)) {
-                $searchCriteriaMet = (string)$programme['duration'] === $request['duration'];
-            }
-            if ($searchCriteriaMet && array_key_exists("discount", $request)) {
-                $searchCriteriaMet = $programme['discount'] === $request['discount'];
-            }
+            $searchCriteriaMet = checkCriteria($request, $programme);
             if ($searchCriteriaMet) {
                 $findProgrammes[] = $programme;
             }

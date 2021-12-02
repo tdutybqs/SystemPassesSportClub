@@ -62,22 +62,21 @@ function render(int $httpCode, array $data): void
     exit();
 }
 
-
-///**
-// * Функция, сокращающая портянки
-// *
-// * @param array $data - сущность, по которой производить поиск
-// * @param array $request - $_GET
-// * @return bool
-// */
-//function searchCriteriaMet(array $data, array $request): bool
-//{
-//    $startValue = true;
-//    foreach ($request as $criteriaForSearch => $index) {
-//        $startValue = (string)$data[$criteriaForSearch] === $index;
-//        if ($startValue === false) {
-//            return false;
-//        }
-//    }
-//    return $startValue;
-//}
+/**
+ * Проверяет объект на соответствие заданным критериям
+ *
+ * @param array $request - параметры, проверяемые функцией
+ * @param array $body - какой сущности соответствуют параметры
+ * @return bool|null
+ */
+function checkCriteria(array $request, array $body): ?bool
+{
+    $criteriaMeet = true;
+    foreach ($request as $key => $value) {
+        $criteriaMeet = ($body[$key] === null ? null : (string)$body[$key] === (string)$value);
+        if ($criteriaMeet === false) {
+            return false;
+        }
+    }
+    return $criteriaMeet === null ? null : true;
+}
