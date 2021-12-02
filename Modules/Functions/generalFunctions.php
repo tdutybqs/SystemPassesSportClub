@@ -73,7 +73,7 @@ function checkCriteria(array $request, array $body): ?bool
 {
     $criteriaMeet = true;
     foreach ($request as $key => $value) {
-        if (!array_key_exists($key, $body)) {
+        if(!array_key_exists($key, $body)){
             return null;
         }
         $criteriaMeet = ($body[$key] === null ? null : (string)$body[$key] === (string)$value);
