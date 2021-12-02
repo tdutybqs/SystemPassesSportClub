@@ -1,0 +1,103 @@
+### 4 Клиент смотрит окончание абонемента
+GET http://localhost:8080/pass?pass_id=3
+
+> {%
+ client.test("Клиент смотрит окончание абонемента", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 3, "id абонемента некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[0]['customer_id'] === 3, "id клиента некорректна");
+ });
+ %}
+
+
+### 4 Клиент смотрит окончание абонемента - срок
+GET http://localhost:8080/pass?duration=06.05.2021 - 06.05.2023
+
+> {%
+ client.test("Клиент смотрит окончание абонемента - срок", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 3, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 3, "id абонемента некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[0]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[1]['pass_id'] === 4, "id абонемента некорректен");
+     client.assert(response.body[1]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[1]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[2]['pass_id'] === 5, "id абонемента некорректен");
+     client.assert(response.body[2]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[2]['customer_id'] === 3, "id клиента некорректна");
+ });
+ %}
+
+### 4 Клиент смотрит окончание абонемента - id пользователя
+GET http://localhost:8080/pass?customer_id=3
+
+> {%
+ client.test("Клиент смотрит окончание абонемента - id пользователя", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 3, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 3, "id абонемента некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[0]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[1]['pass_id'] === 4, "id абонемента некорректен");
+     client.assert(response.body[1]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[1]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[2]['pass_id'] === 5, "id абонемента некорректен");
+     client.assert(response.body[2]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[2]['customer_id'] === 3, "id клиента некорректна");
+ });
+ %}
+
+### 4 Клиент смотрит окончание абонемента - discount
+GET http://localhost:8080/pass?discount=10%25
+
+> {%
+ client.test("Клиент смотрит окончание абонемента - discount", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 3, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 3, "id абонемента некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[0]['discount'] === "10%", "Discount некорректен");
+     client.assert(response.body[0]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[1]['pass_id'] === 4, "id абонемента некорректен");
+     client.assert(response.body[1]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[1]['discount'] === "10%", "Discount некорректен");
+     client.assert(response.body[1]['customer_id'] === 3, "id клиента некорректна");
+
+     client.assert(response.body[2]['pass_id'] === 5, "id абонемента некорректен");
+     client.assert(response.body[2]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[2]['discount'] === "10%", "Discount некорректен");
+     client.assert(response.body[2]['customer_id'] === 3, "id клиента некорректна");
+ });
+ %}
+
+### 4 Клиент смотрит окончание абонемента - discount, pass_id
+GET http://localhost:8080/pass?discount=10%25&pass_id=4
+
+> {%
+ client.test("Клиент смотрит окончание абонемента - discount", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['pass_id'] === 4, "id абонемента некорректен");
+     client.assert(response.body[0]['duration'] === "06.05.2021 - 06.05.2023", "Срок действия абонемента некорректен");
+     client.assert(response.body[0]['discount'] === "10%", "Discount некорректен");
+     client.assert(response.body[0]['customer_id'] === 3, "id клиента некорректна");
+ });
+ %}

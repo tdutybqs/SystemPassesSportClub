@@ -1,0 +1,158 @@
+
+### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: customer_id
+GET http://localhost:8080/purchased_items?customer_id=1
+
+> {%
+ client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: customer_id", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 1, "id клиента некорректен");
+     client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[0]['birthdate'] === "15.11.1990", "День рождения клиента некорректен");
+     client.assert(response.body[0]['phone'] === "+79503215245", "Телефон клиента некорректен");
+     client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
+     client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 1, "id преобретённого товара некорректен");
+     client.assert(response.body[0]['purchased_items'][0]['pass_id'] === 1, "id абонемента некорректен");
+     client.assert(response.body[0]['purchased_items'][0]['id_programme'] === 6, "id программы некорректен");
+     client.assert(response.body[0]['purchased_items'][0]['price'] === 8500, "Цена программы некорректна");
+     client.assert(response.body[0]['purchased_items'][1]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
+     client.assert(response.body[0]['purchased_items'][1]['pass_id'] === 1, "id абонемента некорректен");
+     client.assert(response.body[0]['purchased_items'][1]['id_programme'] === 4, "id программы некорректен");
+     client.assert(response.body[0]['purchased_items'][1]['price'] === 8000, "Цена программы некорректна");
+ });
+ %}
+
+### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: price
+GET http://localhost:8080/purchased_items?price=8000
+
+> {%
+ client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: price", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 3, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 1, "id клиента некорректен");
+     client.assert(response.body[1]['customer_id'] === 3, "id клиента некорректен");
+     client.assert(response.body[2]['customer_id'] === 2, "id клиента некорректен");
+
+     client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[1]['full_name'] === "Иванова Екатерина Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[2]['full_name'] === "Кузнецов Максим Анатольевич", "ФИО клиента некорректно");
+
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[1]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[2]['sex'] === "м", "Пол клиента некорректен");
+
+     client.assert(response.body[0]['birthdate'] === "15.11.1990", "День рождения клиента некорректен");
+     client.assert(response.body[1]['birthdate'] === "15.10.1970", "День рождения клиента некорректен");
+     client.assert(response.body[2]['birthdate'] === "23.05.1992", "День рождения клиента некорректен");
+
+     client.assert(response.body[0]['phone'] === "+79503215245", "Телефон клиента некорректен");
+     client.assert(response.body[1]['phone'] === "+79503287247", "Телефон клиента некорректен");
+     client.assert(response.body[2]['phone'] === "+75195623247", "Телефон клиента некорректен");
+
+     client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
+     client.assert(response.body[1]['passport'] === "20 33 249846", "Паспорт клиента некорректен");
+     client.assert(response.body[2]['passport'] === "20 11 211256", "Паспорт клиента некорректен");
+
+     client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[1]['purchased_items'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[2]['purchased_items'] !== undefined, "Нет данных о клиенте");
+
+     client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['purchased_item_id'] === 5, "id преобретённого товара некорректен");
+     client.assert(response.body[1]['purchased_items'][1]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['purchased_item_id'] === 2, "id преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['pass_id'] === 1, "id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['pass_id'] === 5, "id преобретённого товара некорректен");
+     client.assert(response.body[1]['purchased_items'][1]['pass_id'] === 3, "id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['pass_id'] === 2, "id преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['id_programme'] === 4, "id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['id_programme'] === 1, "id преобретённого товара некорректен");
+     client.assert(response.body[1]['purchased_items'][1]['id_programme'] === 5, "id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['id_programme'] === 1, "id преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
+     client.assert(response.body[1]['purchased_items'][1]['price'] === 8000, "id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['price'] === 8000, "id преобретённого товара некорректен");
+ });
+ %}
+
+### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: price, purchased_item_id
+GET http://localhost:8080/purchased_items?price=8000&purchased_item_id=2
+
+> {%
+ client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: price, purchased_item_id", function (){
+     client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
+     client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
+     response.contentType.mimeType);
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 3, "В ответе есть один элемент");
+     client.assert(response.body[0]['customer_id'] === 1, "id клиента некорректен");
+     client.assert(response.body[1]['customer_id'] === 2, "id клиента некорректен");
+     client.assert(response.body[2]['customer_id'] === 3, "id клиента некорректен");
+
+     client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
+     client.assert(response.body[1]['full_name'] === "Кузнецов Максим Анатольевич", "ФИО клиента некорректно");
+     client.assert(response.body[2]['full_name'] === "Иванова Екатерина Александровна", "ФИО клиента некорректно");
+
+     client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[2]['sex'] === "ж", "Пол клиента некорректен");
+     client.assert(response.body[1]['sex'] === "м", "Пол клиента некорректен");
+
+     client.assert(response.body[0]['birthdate'] === "15.11.1990", "День рождения клиента некорректен");
+     client.assert(response.body[2]['birthdate'] === "15.10.1970", "День рождения клиента некорректен");
+     client.assert(response.body[1]['birthdate'] === "23.05.1992", "День рождения клиента некорректен");
+
+     client.assert(response.body[0]['phone'] === "+79503215245", "Телефон клиента некорректен");
+     client.assert(response.body[2]['phone'] === "+79503287247", "Телефон клиента некорректен");
+     client.assert(response.body[1]['phone'] === "+75195623247", "Телефон клиента некорректен");
+
+     client.assert(response.body[0]['passport'] === "22 15 215846", "Паспорт клиента некорректен");
+     client.assert(response.body[2]['passport'] === "20 33 249846", "Паспорт клиента некорректен");
+     client.assert(response.body[1]['passport'] === "20 11 211256", "Паспорт клиента некорректен");
+
+     client.assert(response.body[0]['purchased_items'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[2]['purchased_items'] !== undefined, "Нет данных о клиенте");
+     client.assert(response.body[1]['purchased_items'] !== undefined, "Нет данных о клиенте");
+
+     client.assert(response.body[0]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['purchased_item_id'] === 2, "purchased_item_id преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['pass_id'] === 1, "pass_id преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['pass_id'] === 2, "pass_id преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['pass_id'] === 3, "pass_id преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['id_programme'] === 4, "id_programme преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['id_programme'] === 1, "id_programme преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['id_programme'] === 5, "id_programme преобретённого товара некорректен");
+
+     client.assert(response.body[0]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
+
+     client.assert(response.body[1]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
+
+     client.assert(response.body[2]['purchased_items'][0]['price'] === 8000, "price преобретённого товара некорректен");
+ });
+ %}
+
