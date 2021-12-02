@@ -61,3 +61,23 @@ function render(int $httpCode, array $data): void
     echo json_encode($data, JSON_THROW_ON_ERROR);
     exit();
 }
+
+
+/**
+ * Функция, сокращающая портянки
+ *
+ * @param array $data - сущность, по которой производить поиск
+ * @param array $request - $_GET
+ * @return bool
+ */
+function searchCriteriaMet(array $data, array $request): bool
+{
+    $startValue = true;
+    foreach ($request as $criteriaForSearch => $index) {
+        $startValue = (string)$data[$criteriaForSearch] === $index;
+        if ($startValue === false) {
+            return false;
+        }
+    }
+    return $startValue;
+}
