@@ -63,21 +63,21 @@ function render(int $httpCode, array $data): void
 }
 
 
-/**
- * Функция, сокращающая портянки
- *
- * @param array $data - сущность, по которой производить поиск
- * @param array $request - $_GET
- * @return bool
- */
-function searchCriteriaMet(array $data, array $request): bool
-{
-    $startValue = true;
-    foreach ($request as $criteriaForSearch => $index) {
-        $startValue = (string)$data[$criteriaForSearch] === $index;
-        if ($startValue === false) {
-            return false;
-        }
-    }
-    return $startValue;
-}
+///**
+// * Функция, сокращающая портянки
+// *
+// * @param array $data - сущность, по которой производить поиск
+// * @param array $request - $_GET
+// * @return bool
+// */
+//function searchCriteriaMet(array $data, array $request): bool
+//{
+//    $startValue = true;
+//    foreach ($request as $criteriaForSearch => $index) {
+//        $startValue = (string)$data[$criteriaForSearch] === $index;
+//        if ($startValue === false) {
+//            return false;
+//        }
+//    }
+//    return $startValue;
+//}
