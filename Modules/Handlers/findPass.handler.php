@@ -10,8 +10,7 @@ include_once __DIR__ . "/../Functions/generalFunctions.php";
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array
-{
+return static function (array $request, callable $logger): array {
     $passes = loadData(__DIR__ . "/../../Jsons/pass.json");
 
     $logger('Переход на /pass выполнен');
@@ -24,20 +23,7 @@ return static function (array $request, callable $logger): array
     ];
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($passes as $pass) {
-            if (array_key_exists("pass_id", $request)) {
-                $searchCriteriaMet = $pass['pass_id'] === (int)$request['pass_id'];
-            } else {
-                $searchCriteriaMet = true;
-            }
-            if ($searchCriteriaMet && array_key_exists("duration", $request)) {
-                $searchCriteriaMet = $pass['duration'] === $request['duration'];
-            }
-            if ($searchCriteriaMet && array_key_exists("customer_id", $request)) {
-                $searchCriteriaMet = $pass['customer_id'] === (int)$request['customer_id'];
-            }
-            if ($searchCriteriaMet && array_key_exists("discount", $request)) {
-                $searchCriteriaMet = $pass['discount'] === $request['discount'];
-            }
+            $searchCriteriaMet = checkCriteria($request, $pass);
             if ($searchCriteriaMet) {
                 $findPasses[] = $pass;
             }
@@ -50,3 +36,4 @@ return static function (array $request, callable $logger): array
     }
     return $result;
 };
+
