@@ -1,5 +1,5 @@
 ### 3 Клиент может узнать уровень сложности программ: id_programme
-GET http://localhost:8080/programmes?id_programme=1
+GET http://localhost:8060/programmes?id_programme=1
 
 > {%
  client.test("Клиент может узнать уровень сложности программ: id_programme", function (){
@@ -15,7 +15,7 @@ GET http://localhost:8080/programmes?id_programme=1
  %}
 
 ### 3 Клиент может узнать уровень сложности программ: name
-GET http://localhost:8080/programmes?name=Суставная гимнастика
+GET http://localhost:8060/programmes?name=Суставная гимнастика
 
 > {%
  client.test("Клиент может узнать уровень сложности программ: name", function (){
@@ -31,7 +31,7 @@ GET http://localhost:8080/programmes?name=Суставная гимнастик�
  %}
 
 ### 3 Клиент может узнать уровень сложности программ: duration
-GET http://localhost:8080/programmes?duration=1 час
+GET http://localhost:8060/programmes?duration=1 час
 
 > {%
  client.test("Клиент может узнать уровень сложности программ: name", function (){
@@ -52,7 +52,7 @@ GET http://localhost:8080/programmes?duration=1 час
  %}
 
 ### 3 Клиент может узнать уровень сложности программ: discount
-GET http://localhost:8080/programmes?discount=Требует подготовки
+GET http://localhost:8060/programmes?discount=Требует подготовки
 
 > {%
  client.test("Клиент может узнать уровень сложности программ: discount", function (){
@@ -68,7 +68,7 @@ GET http://localhost:8080/programmes?discount=Требует подготовк�
  %}
 
 ### 3 Клиент может узнать уровень сложности программ: discount, duration
-GET http://localhost:8080/programmes?discount=Не требует подготовки&duration=2 часа
+GET http://localhost:8060/programmes?discount=Не требует подготовки&duration=2 часа
 
 > {%
  client.test("Клиент может узнать уровень сложности программ: discount", function (){

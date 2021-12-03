@@ -1,5 +1,5 @@
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: customer_id
-GET http://localhost:8080/purchased_items?customer_id=1
+GET http://localhost:8060/purchased_items?customer_id=1
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: customer_id", function (){
@@ -26,7 +26,7 @@ GET http://localhost:8080/purchased_items?customer_id=1
  %}
 
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: price
-GET http://localhost:8080/purchased_items?price=8000
+GET http://localhost:8060/purchased_items?price=8000
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: price", function (){
@@ -93,7 +93,7 @@ GET http://localhost:8080/purchased_items?price=8000
  %}
 
 ### 5 Менеджер может узнать общую стоимость покупаемых клиентом программ: price, purchased_item_id
-GET http://localhost:8080/purchased_items?price=8000&purchased_item_id=2
+GET http://localhost:8060/purchased_items?price=8000&purchased_item_id=2
 
 > {%
  client.test("Менеджер может узнать общую стоимость покупаемых клиентом программ: price, purchased_item_id", function (){
