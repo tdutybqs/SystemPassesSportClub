@@ -73,7 +73,7 @@ function checkCriteria(array $request, array $body): ?bool
 {
     $criteriaMeet = true;
     foreach ($request as $key => $value) {
-        if(!array_key_exists($key, $body)){
+        if (!array_key_exists($key, $body)) {
             return null;
         }
         $criteriaMeet = ($body[$key] === null ? null : (string)$body[$key] === (string)$value);
@@ -91,16 +91,15 @@ function checkCriteria(array $request, array $body): ?bool
  * @param int $offset - смещение
  * @return array
  */
-function changeNameKeyArray(array $request, string $splitter, bool $beforeNeedle=false, int $offset=1):array
+function changeNameKeyArray(array $request, string $splitter, bool $beforeNeedle = false, int $offset = 1): array
 {
-    $arr=[];
-    foreach ($request as $key => $value){
-        if(strpos($key,$splitter)){
-            $arr[substr(stristr($key,$splitter,$beforeNeedle),$offset)] = $value;
-        }else{
+    $arr = [];
+    foreach ($request as $key => $value) {
+        if (strpos($key, $splitter)) {
+            $arr[substr(stristr($key, $splitter, $beforeNeedle), $offset)] = $value;
+        } else {
             $arr[$key] = $value;
         }
     }
     return $arr;
-
 }
