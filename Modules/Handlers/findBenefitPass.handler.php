@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/../Classes/BenefitPass.php";
+require_once __DIR__ . "/../Classes/Customer.php";
 include_once __DIR__ . "/../Functions/generalFunctions.php";
 
 /**
@@ -32,22 +34,37 @@ return static function (array $request, callable $logger): array {
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         $customerIdToBenefitPass = [];
         foreach ($benefitPasses as $benefitPass) {
-            $customerIdToBenefitPass[$benefitPass['customer_id']] = $benefitPass;
+            $benefitPassObj = new BenefitPass();
+            $benefitPassObj->setTypeBenefit($benefitPass['type_benefit'])
+                ->setNumberDocument($benefitPass['number_document'])
+                ->setEnd($benefitPass['end']);
+            $customerIdToBenefitPass[$benefitPass['customer_id']] = $benefitPassObj;
         }
 
         foreach ($customers as $customer) {
-            $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request, $customer);
-            if ($benefitPassPurchaseReportsMeetSearchCriteria === null && array_key_exists($customer['customer_id'],
-                    $customerIdToBenefitPass)) {
-                $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request,
-                    $customerIdToBenefitPass[$customer['customer_id']]);
+            // Trash
+            if ($customerIdToBenefitPass[$customer['customer_id']] === null) {
+                continue;
             }
+            $benefitPassObjToArray = [
+                'type_benefit' => $customerIdToBenefitPass[$customer['customer_id']]->getTypeBenefit(),
+                'number_document' => $customerIdToBenefitPass[$customer['customer_id']]->getNumberDocument(),
+                'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
+            ];
+            $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request, array_merge($customer, $benefitPassObjToArray));
+            // End Trash
 
             if ($benefitPassPurchaseReportsMeetSearchCriteria && $customerIdToBenefitPass[$customer["customer_id"]] !== null) {
-                $benefitPass = $customerIdToBenefitPass[$customer["customer_id"]];
-                $customer["benefit"] = $benefitPass;
-                unset($customer["benefit"]["pass_id"], $customer["benefit"]["discount"], $customer["benefit"]["customer_id"], $customer["benefit"]["duration"]);
-                $findCustomers[] = $customer;
+                $customerObj = new Customer();
+                $customerObj->setBirthdate($customer['birthdate'])
+                    ->setId($customer['customer_id'])
+                    ->setFullName($customer['full_name'])
+                    ->setPassport($customer['passport'])
+                    ->setPhone($customer['phone'])
+                    ->setSex($customer['sex']);
+                $complete = $customerIdToBenefitPass[$customer["customer_id"]]->setCustomer($customerObj);
+
+                $findCustomers[] = $complete;
             }
         }
         $logger('Найдено ' . count($findCustomers) . ' объектов.');

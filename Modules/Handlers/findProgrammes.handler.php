@@ -1,6 +1,8 @@
 <?php
 
 include_once __DIR__ . "/../Functions/generalFunctions.php";
+require_once __DIR__ . "/../Classes/Programme.php";
+
 
 /**
  * Функция обработки поиска программ
@@ -10,8 +12,7 @@ include_once __DIR__ . "/../Functions/generalFunctions.php";
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array
-{
+return static function (array $request, callable $logger): array {
     $logger('Переход на /programmes выполнен ');
 
     $programmes = loadData(__DIR__ . "/../../Jsons/programmes.json");
@@ -28,7 +29,12 @@ return static function (array $request, callable $logger): array
         foreach ($programmes as $programme) {
             $searchCriteriaMet = checkCriteria($request, $programme);
             if ($searchCriteriaMet) {
-                $findProgrammes[] = $programme;
+                $programmeObj = new Programme();
+                $programmeObj->setId($programme['id_programme'])
+                    ->setDuration($programme['duration'])
+                    ->setDiscount($programme['discount'])
+                    ->setName($programme['name']);
+                $findProgrammes[] = $programmeObj;
             }
         }
         $logger('Найдено ' . count($findProgrammes) . ' объектов.');

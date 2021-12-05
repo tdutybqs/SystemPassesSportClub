@@ -1,6 +1,10 @@
 <?php
 
 include_once __DIR__ . "/../Functions/generalFunctions.php";
+require_once __DIR__ . "/../Classes/Customer.php";
+require_once __DIR__ . "/../Classes/PurchasedItem.php";
+require_once __DIR__ . "/../Classes/Programme.php";
+
 
 /**
  * Поиск покупаемых программ пользователем
@@ -13,10 +17,10 @@ include_once __DIR__ . "/../Functions/generalFunctions.php";
 return static function (array $request, callable $logger): array {
     $customerResult = [];
 
-    // Подключаем нужные JSON's
     $passes = loadData(__DIR__ . "/../../Jsons/pass.json");
     $customers = loadData(__DIR__ . "/../../Jsons/customers.json");
     $purchasedItems = loadData(__DIR__ . "/../../Jsons/purchased_item.json");
+    $programmes = loadData(__DIR__ . "/../../Jsons/programmes.json");
 
     $logger('Переход на /purchased_items выполнен');
 
@@ -34,38 +38,76 @@ return static function (array $request, callable $logger): array {
     ];
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         $customerIdToInfo = [];
-        foreach ($customers as $customerInfo) {
-            $customerIdToInfo[$customerInfo['customer_id']] = $customerInfo;
+        foreach ($customers as $currentCustomer) {
+            $customerObj = new Customer();
+            $customerObj->setId($currentCustomer['customer_id'])
+                ->setSex($currentCustomer['sex'])
+                ->setPhone($currentCustomer['phone'])
+                ->setPassport($currentCustomer['passport'])
+                ->setFullName($currentCustomer['full_name'])
+                ->setBirthdate($currentCustomer['birthdate']);
+            $customerIdToInfo[$currentCustomer['customer_id']] = $customerObj;
         }
-        $customerIdToPurchasedItem = [];
 
+        $customerIdToPurchasedItem = [];
         $passesIdToInfo = [];
         foreach ($passes as $passInfo) {
-            $passesIdToInfo[$passInfo['pass_id']] = $passInfo;
+            $passObj = new Pass();
+            $passObj->setId($passInfo['pass_id'])
+                ->setDiscount($passInfo['discount'])
+                ->setDuration($passInfo['duration'])
+                ->setCustomer($customerIdToInfo[$passInfo['customer_id']]);
+            $passesIdToInfo[$passInfo['pass_id']] = $passObj;
+        }
+
+        $programmesIdToInfo = [];
+        foreach ($programmes as $programme) {
+            $programmeObj = new Programme();
+            $programmeObj->setId($programme['id_programme'])
+                ->setDuration($programme['duration'])
+                ->setDiscount($programme['discount'])
+                ->setName($programme['name']);
+            $programmesIdToInfo[$programme['id_programme']] = $programmeObj;
         }
 
         foreach ($purchasedItems as $purchasedItem) {
-            $customerId = $passesIdToInfo[$purchasedItem['pass_id']]['customer_id'];
-            $searchCriteriaMet = checkCriteria($request, $customerIdToInfo[$customerId]);
+            $customerId = $passesIdToInfo[$purchasedItem['pass_id']]->getCustomer()->getId();
 
-            if ($searchCriteriaMet === null) {
-                $searchCriteriaMet = checkCriteria($request, $purchasedItem);
+            // Trash
+            if ($customerIdToInfo[$customerId] === null) {
+                continue;
             }
+            $customerInfo = [
+                "customer_id" => $customerIdToInfo[$customerId]->getId(),
+                "full_name" => $customerIdToInfo[$customerId]->getFullName(),
+                "sex" => $customerIdToInfo[$customerId]->getSex(),
+                "birthdate" => $customerIdToInfo[$customerId]->getBirthdate(),
+                "phone" => $customerIdToInfo[$customerId]->getPhone(),
+                "passport" => $customerIdToInfo[$customerId]->getPassport()
+            ];
+            $searchCriteriaMet = checkCriteria($request, array_merge($purchasedItem, $customerInfo));
+            // End Trash
 
             if ($searchCriteriaMet) {
+                // Если такого кастомера еще нет в массиве, добавляем по id кастомера флаг true
                 if (!array_key_exists($customerId, $customerResult)) {
                     $customerResult[$customerId] = true;
                     $result[] = $customerIdToInfo[$customerId];
                 }
+
                 if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
                     $customerIdToPurchasedItem[$customerId] = [];
                 }
-                $customerIdToPurchasedItem[$customerId][] = $purchasedItem;
+                $purchasedItemObj = new PurchasedItem();
+                $purchasedItemObj->setPurchasedItemId($purchasedItem['purchased_item_id'])
+                    ->setPrice($purchasedItem['price'])
+                    ->setProgramId($programmesIdToInfo[$purchasedItem['id_programme']])
+                    ->setPassId($passesIdToInfo[$purchasedItem['pass_id']]);
+                $customerIdToPurchasedItem[$customerId][] = $purchasedItemObj;
             }
         }
-        foreach ($result as &$customerInfo) {
-            $customerInfo['purchased_items'] = $customerIdToPurchasedItem[$customerInfo['customer_id']];
-        }
+        $result = $customerIdToPurchasedItem;
+
         $logger('Найдено ' . count($result) . ' объектов.');
         return [
             'httpCode' => 200,
