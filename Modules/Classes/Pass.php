@@ -8,6 +8,7 @@ require_once __DIR__ . "/Employee.php";
  */
 class Pass implements JsonSerializable
 {
+
     /**
      * id абонемента
      * @var int
@@ -33,109 +34,54 @@ class Pass implements JsonSerializable
     private Customer $customer;
 
     /**
-     * ID сотрудника (кто продал)
-     * @var Employee
+     * Конструктор абонемент
+     * @param int $id - идентификатор абонемента
+     * @param string $duration - период действия
+     * @param string $discount - скидка
+     * @param Customer $customer - кому принадлежит абонемент (клиент)
      */
-    private Employee $employee;
+    public function __construct(int $id, string $duration, string $discount, Customer $customer)
+    {
+        $this->id = $id;
+        $this->duration = $duration;
+        $this->discount = $discount;
+        $this->customer = $customer;
+    }
 
     /**
      * Получить id абонемента
      * @return int
      */
-    public function getId(): int
+    final public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * Установить id абонемента
-     * @param int $id
-     * @return Pass
-     */
-    public function setId(int $id): Pass
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
      * Получить срок действия абонемента
      * @return string
      */
-    public function getDuration(): string
+    final public function getDuration(): string
     {
         return $this->duration;
-    }
-
-    /**
-     * Установить срок действия абонемента
-     * @param string $duration
-     * @return Pass
-     */
-    public function setDuration(string $duration): Pass
-    {
-        $this->duration = $duration;
-        return $this;
     }
 
     /**
      * Получить размер скидки
      * @return string
      */
-    public function getDiscount(): string
+    final public function getDiscount(): string
     {
         return $this->discount;
-    }
-
-    /**
-     * Установить размер скидки
-     * @param string $discount
-     * @return Pass
-     */
-    public function setDiscount(string $discount): Pass
-    {
-        $this->discount = $discount;
-        return $this;
     }
 
     /**
      * Получить id клиента
      * @return Customer
      */
-    public function getCustomer(): Customer
+    final public function getCustomer(): Customer
     {
         return $this->customer;
-    }
-
-    /**
-     * Установить клиента
-     * @param Customer $customer
-     * @return Pass
-     */
-    public function setCustomer(Customer $customer): Pass
-    {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
-     * Получить id сотрудника, который продал абонемент
-     * @return Employee
-     */
-    public function getEmployee(): Employee
-    {
-        return $this->employee;
-    }
-
-    /**
-     * Установить id сотрудника, который продал абонемент
-     * @param Employee $employee
-     * @return Pass
-     */
-    public function setEmployee(Employee $employee): Pass
-    {
-        $this->employee = $employee;
-        return $this;
     }
 
     /**
@@ -149,6 +95,16 @@ class Pass implements JsonSerializable
             "customer_id" => $this->getCustomer()->getId(),
             "duration" => $this->getDuration(),
         ];
+    }
+
+    /**
+     * Создание объекта из массива
+     * @param array $data
+     * @return Pass
+     */
+    public static function createFromArray(array $data): Pass
+    {
+        return new Pass($data['pass_id'], $data['duration'], $data['discount'], $data['customer']);
     }
 
 }

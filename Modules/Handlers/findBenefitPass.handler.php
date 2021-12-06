@@ -32,17 +32,12 @@ return static function (array $request, callable $logger): array {
     ];
 
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
-        $customerIdToBenefitPass = [];
-        foreach ($benefitPasses as $benefitPass) {
-            $benefitPassObj = new BenefitPass();
-            $benefitPassObj->setTypeBenefit($benefitPass['type_benefit'])
-                ->setNumberDocument($benefitPass['number_document'])
-                ->setEnd($benefitPass['end']);
-            $customerIdToBenefitPass[$benefitPass['customer_id']] = $benefitPassObj;
-        }
-
         foreach ($customers as $customer) {
-            // TODO начало сомнений
+            $customerIdToBenefitPass = [];
+            foreach ($benefitPasses as $benefitPass) {
+                $benefitPass['customer'] = Customer::createFromArray($customer);
+                $customerIdToBenefitPass[$benefitPass['customer_id']] = BenefitPass::createFromArray($benefitPass);
+            }
             if ($customerIdToBenefitPass[$customer['customer_id']] === null) {
                 continue;
             }
@@ -51,20 +46,11 @@ return static function (array $request, callable $logger): array {
                 'number_document' => $customerIdToBenefitPass[$customer['customer_id']]->getNumberDocument(),
                 'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
             ];
-            $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request, array_merge($customer, $benefitPassObjToArray));
-            // TODO конец сомнениям
+            $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request,
+                array_merge($customer, $benefitPassObjToArray));
 
             if ($benefitPassPurchaseReportsMeetSearchCriteria && $customerIdToBenefitPass[$customer["customer_id"]] !== null) {
-                $customerObj = new Customer();
-                $customerObj->setBirthdate($customer['birthdate'])
-                    ->setId($customer['customer_id'])
-                    ->setFullName($customer['full_name'])
-                    ->setPassport($customer['passport'])
-                    ->setPhone($customer['phone'])
-                    ->setSex($customer['sex']);
-                $complete = $customerIdToBenefitPass[$customer["customer_id"]]->setCustomer($customerObj);
-
-                $findCustomers[] = $complete;
+                $findCustomers[] =  $customerIdToBenefitPass[$customer['customer_id']];
             }
         }
         $logger('Найдено ' . count($findCustomers) . ' объектов.');

@@ -39,41 +39,24 @@ return static function (array $request, callable $logger): array {
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         $customerIdToInfo = [];
         foreach ($customers as $currentCustomer) {
-            $customerObj = new CustomerView();
-            $customerObj->setId($currentCustomer['customer_id'])
-                ->setSex($currentCustomer['sex'])
-                ->setPhone($currentCustomer['phone'])
-                ->setPassport($currentCustomer['passport'])
-                ->setFullName($currentCustomer['full_name'])
-                ->setBirthdate($currentCustomer['birthdate']);
-            $customerIdToInfo[$currentCustomer['customer_id']] = $customerObj;
+            $customerIdToInfo[$currentCustomer['customer_id']] = CustomerView::createFromArray($currentCustomer);
         }
         $customerList = [];
         $customerIdToPurchasedItem = [];
         $passesIdToInfo = [];
         foreach ($passes as $passInfo) {
-            $passObj = new Pass();
-            $passObj->setId($passInfo['pass_id'])
-                ->setDiscount($passInfo['discount'])
-                ->setDuration($passInfo['duration'])
-                ->setCustomer($customerIdToInfo[$passInfo['customer_id']]);
-            $passesIdToInfo[$passInfo['pass_id']] = $passObj;
+            $passInfo['customer'] = $customerIdToInfo[$passInfo['customer_id']];
+            $passesIdToInfo[$passInfo['pass_id']] = Pass::createFromArray($passInfo);
         }
 
         $programmesIdToInfo = [];
         foreach ($programmes as $programme) {
-            $programmeObj = new Programme();
-            $programmeObj->setId($programme['id_programme'])
-                ->setDuration($programme['duration'])
-                ->setDiscount($programme['discount'])
-                ->setName($programme['name']);
-            $programmesIdToInfo[$programme['id_programme']] = $programmeObj;
+            $programmesIdToInfo[$programme['id_programme']] = Programme::createFromArray($programme);
         }
 
         foreach ($purchasedItems as $purchasedItem) {
             $customerId = $passesIdToInfo[$purchasedItem['pass_id']]->getCustomer()->getId();
 
-            // TODO начало сомнений
             if ($customerIdToInfo[$customerId] === null) {
                 continue;
             }
@@ -86,7 +69,6 @@ return static function (array $request, callable $logger): array {
                 "passport" => $customerIdToInfo[$customerId]->getPassport()
             ];
             $searchCriteriaMet = checkCriteria($request, array_merge($purchasedItem, $customerInfo));
-            // TODO конец сомнениям
 
             if ($searchCriteriaMet) {
                 // Если такого кастомера еще нет в массиве, добавляем по id кастомера флаг true
@@ -98,20 +80,14 @@ return static function (array $request, callable $logger): array {
                 if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
                     $customerIdToPurchasedItem[$customerId] = [];
                 }
-                $purchasedItemObj = new PurchasedItem();
-                $purchasedItemObj->setPurchasedItemId($purchasedItem['purchased_item_id'])
-                    ->setPrice($purchasedItem['price'])
-                    ->setProgramId($programmesIdToInfo[$purchasedItem['id_programme']])
-                    ->setPassId($passesIdToInfo[$purchasedItem['pass_id']]);
-                $customerIdToPurchasedItem[$customerId][] = $purchasedItemObj;
+                $purchasedItem['id_programme'] = $programmesIdToInfo[$purchasedItem['id_programme']];
+                $purchasedItem['pass_id'] = $passesIdToInfo[$purchasedItem['pass_id']];
+                $customerIdToPurchasedItem[$customerId][] = PurchasedItem::createFromArray($purchasedItem);
             }
         }
-
-        //TODO поле экспериментов
         //customerList - список всех клиентов, которые нам подходят
         //customerIdToPurchasedItem - список всех purchased_item, которые нам подходят. Ключ - id customer
-        foreach ($customerList as &$currentCustomer)
-        {
+        foreach ($customerList as &$currentCustomer) {
             $currentCustomer->setPurchasedItems($customerIdToPurchasedItem[$currentCustomer->getId()]);
         }
         $result = $customerList;

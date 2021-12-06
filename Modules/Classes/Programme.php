@@ -5,6 +5,7 @@
  */
 class Programme implements JsonSerializable
 {
+
     /**
      * id программы
      * @var int
@@ -30,89 +31,54 @@ class Programme implements JsonSerializable
     private string $discount;
 
     /**
-     * клиент программы
-     * @var Customer
+     * Конструктор программы
+     * @param int $id - идентификатор программы
+     * @param string $name - наименование пораммы
+     * @param string $duration - период действия программы
+     * @param string $discount - уровень сложности программы
      */
-    private Customer $customer;
+    public function __construct(int $id, string $name, string $duration, string $discount)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->duration = $duration;
+        $this->discount = $discount;
+    }
 
     /**
      * Получить id
      * @return int
      */
-    public function getId(): int
+    final public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * Установить id
-     * @param int $id
-     * @return Programme
-     */
-    public function setId(int $id): Programme
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
      * Получить название программы
      * @return string
      */
-    public function getName(): string
+    final public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Установить название программы
-     * @param string $name
-     * @return Programme
-     */
-    public function setName(string $name): Programme
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
      * Получить срок действия программы
      * @return string
      */
-    public function getDuration(): string
+    final public function getDuration(): string
     {
         return $this->duration;
-    }
-
-    /**
-     * Установить срок действия программы
-     * @param string $duration
-     * @return Programme
-     */
-    public function setDuration(string $duration): Programme
-    {
-        $this->duration = $duration;
-        return $this;
     }
 
     /**
      * Получить скидку программы
      * @return string
      */
-    public function getDiscount(): string
+    final public function getDiscount(): string
     {
         return $this->discount;
-    }
-
-    /**
-     * Установить скидку программы
-     * @param string $discount
-     * @return Programme
-     */
-    public function setDiscount(string $discount): Programme
-    {
-        $this->discount = $discount;
-        return $this;
     }
 
     /**
@@ -127,5 +93,15 @@ class Programme implements JsonSerializable
             'duration' => $this->getDuration(),
             'discount' => $this->getDiscount()
         ];
+    }
+
+    /**
+     * Создание объекта из массива
+     * @param array $data
+     * @return Programme
+     */
+    public static function createFromArray(array $data): Programme
+    {
+        return new static($data['id_programme'], $data['name'], $data['duration'], $data['discount']);
     }
 }

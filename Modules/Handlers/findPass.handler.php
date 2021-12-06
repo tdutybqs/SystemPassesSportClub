@@ -1,9 +1,8 @@
 <?php
 
 include_once __DIR__ . "/../Functions/generalFunctions.php";
-require_once __DIR__."/../Classes/Pass.php";
-require_once __DIR__."/../Classes/Customer.php";
-
+require_once __DIR__ . "/../Classes/Pass.php";
+require_once __DIR__ . "/../Classes/Customer.php";
 
 /**
  * Функция, показывающая абонементы пользователей
@@ -19,15 +18,8 @@ return static function (array $request, callable $logger): array {
 
     $logger('Переход на /pass выполнен');
     $customersIdToInfo = [];
-    foreach ($customers as $currentCustomer){
-        $customerObj = new Customer();
-        $customerObj->setId($currentCustomer['customer_id'])
-            ->setSex($currentCustomer['sex'])
-            ->setPhone($currentCustomer['phone'])
-            ->setPassport($currentCustomer['passport'])
-            ->setFullName($currentCustomer['full_name'])
-            ->setBirthdate($currentCustomer['birthdate']);
-        $customersIdToInfo[$currentCustomer['customer_id']] = $customerObj;
+    foreach ($customers as $currentCustomer) {
+        $customersIdToInfo[$currentCustomer['customer_id']] = Customer::createFromArray($currentCustomer);
     }
 
     $findPasses = [];
@@ -38,7 +30,6 @@ return static function (array $request, callable $logger): array {
     ];
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($passes as $pass) {
-            // TODO начало сомнений
             if ($customersIdToInfo[$pass['customer_id']] === null) {
                 continue;
             }
@@ -51,14 +42,10 @@ return static function (array $request, callable $logger): array {
                 "passport" => $customersIdToInfo[$pass['customer_id']]->getPassport()
             ];
             $searchCriteriaMet = checkCriteria($request, array_merge($pass, $benefitPassObjToArray));
-            // TODO конец сомнениям
 
             if ($searchCriteriaMet) {
-                $passesObj = new Pass();
-                $passesObj->setId($pass['pass_id'])
-                ->setDuration($pass['duration'])
-                ->setCustomer($customersIdToInfo[$pass['customer_id']]);
-                $findPasses[] = $passesObj;
+                $pass['customer'] = $customersIdToInfo[$pass['customer_id']];
+                $findPasses[] = Pass::createFromArray($pass);
             }
         }
         $logger('Найдено ' . count($findPasses) . ' объектов.');

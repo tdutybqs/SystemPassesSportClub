@@ -3,6 +3,7 @@
 
 abstract class AbstractUser implements JsonSerializable
 {
+
     /**
      * id пользователя
      *
@@ -25,25 +26,26 @@ abstract class AbstractUser implements JsonSerializable
     private string $phone;
 
     /**
+     * Конструктор AbstractUser
+     * @param int $id - идентификатор пользователя
+     * @param string $full_name - ФИО пользователя
+     * @param string $phone - телефон пользователя
+     */
+    public function __construct(int $id, string $full_name, string $phone)
+    {
+        $this->id = $id;
+        $this->full_name = $full_name;
+        $this->phone = $phone;
+    }
+
+    /**
      * Получить id пользователя
      *
      * @return int
      */
-    public function getId(): int
+    final public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * Установить id пользователя
-     *
-     * @param int $id
-     * @return AbstractUser
-     */
-    public function setId(int $id): AbstractUser
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -51,21 +53,9 @@ abstract class AbstractUser implements JsonSerializable
      *
      * @return string
      */
-    public function getFullName(): string
+    final public function getFullName(): string
     {
         return $this->full_name;
-    }
-
-    /**
-     * Установить ФИО пользователя
-     *
-     * @param string $full_name
-     * @return AbstractUser
-     */
-    public function setFullName(string $full_name): AbstractUser
-    {
-        $this->full_name = $full_name;
-        return $this;
     }
 
     /**
@@ -73,23 +63,15 @@ abstract class AbstractUser implements JsonSerializable
      *
      * @return string
      */
-    public function getPhone(): string
+    final public function getPhone(): string
     {
         return $this->phone;
     }
 
     /**
-     * Установить телефон пользователя
-     *
-     * @param string $phone
-     * @return AbstractUser
+     * Сериализация данных
+     * @return mixed
      */
-    public function setPhone(string $phone): AbstractUser
-    {
-        $this->phone = $phone;
-        return $this;
-    }
-
     abstract public function jsonSerialize();
 
 }

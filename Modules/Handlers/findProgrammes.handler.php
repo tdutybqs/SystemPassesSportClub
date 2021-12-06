@@ -29,12 +29,7 @@ return static function (array $request, callable $logger): array {
         foreach ($programmes as $programme) {
             $searchCriteriaMet = checkCriteria($request, $programme);
             if ($searchCriteriaMet) {
-                $programmeObj = new Programme();
-                $programmeObj->setId($programme['id_programme'])
-                    ->setDuration($programme['duration'])
-                    ->setDiscount($programme['discount'])
-                    ->setName($programme['name']);
-                $findProgrammes[] = $programmeObj;
+                $findProgrammes[] = Programme::createFromArray($programme);
             }
         }
         $logger('Найдено ' . count($findProgrammes) . ' объектов.');

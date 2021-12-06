@@ -8,6 +8,55 @@ require_once __DIR__ . "/AbstractUser.php";
 class Customer extends AbstractUser
 {
     /**
+     * Конструктор клиента
+     * @param int $id - идентификатор клиента
+     * @param string $full_name - ФИО клиента
+     * @param string $phone - телефон клиента
+     * @param string $birthdate - дата рождения клиента
+     * @param string $passport - пасспортные данные клиента
+     * @param string $sex - пол
+     */
+    public function __construct(
+        int $id,
+        string $full_name,
+        string $phone,
+        string $birthdate,
+        string $passport,
+        string $sex
+    ) {
+        parent::__construct($id, $full_name, $phone);
+        $this->birthdate = $birthdate;
+        $this->passport = $passport;
+        $this->sex = $sex;
+    }
+
+    /**
+     * Купленные пурчейзы
+     * @var array
+     */
+    private array $purchasedItems;
+
+    /**
+     * Получить пурчейзы
+     * @return array
+     */
+    public function getPurchasedItems(): array
+    {
+        return $this->purchasedItems;
+    }
+
+    /**
+     * Установить пурчейзы
+     * @param array $purchasedItems
+     * @return Customer
+     */
+    public function setPurchasedItems(array $purchasedItems): Customer
+    {
+        $this->purchasedItems = $purchasedItems;
+        return $this;
+    }
+
+    /**
      * пол клиента
      * @var string
      */
@@ -29,40 +78,18 @@ class Customer extends AbstractUser
      * Получить пол клиента
      * @return string
      */
-    public function getSex(): string
+    final public function getSex(): string
     {
         return $this->sex;
-    }
-
-    /**
-     * Установить пол клиента
-     * @param string $sex
-     * @return Customer
-     */
-    public function setSex(string $sex): Customer
-    {
-        $this->sex = $sex;
-        return $this;
     }
 
     /**
      * Получить дату рождения клиента
      * @return string
      */
-    public function getBirthdate(): string
+    final public function getBirthdate(): string
     {
         return $this->birthdate;
-    }
-
-    /**
-     * Установить дату рождения клиента
-     * @param string $birthdate
-     * @return Customer
-     */
-    public function setBirthdate(string $birthdate): Customer
-    {
-        $this->birthdate = $birthdate;
-        return $this;
     }
 
     /**
@@ -72,37 +99,6 @@ class Customer extends AbstractUser
     public function getPassport(): string
     {
         return $this->passport;
-    }
-
-    /**
-     * Установить паспортные данные клиента
-     * @param string $passport
-     * @return Customer
-     */
-    public function setPassport(string $passport): Customer
-    {
-        $this->passport = $passport;
-        return $this;
-    }
-
-    private array $purchasedItems;
-
-    /**
-     * @return array
-     */
-    public function getPurchasedItems(): array
-    {
-        return $this->purchasedItems;
-    }
-
-    /**
-     * @param array $purchasedItems
-     * @return Customer
-     */
-    public function setPurchasedItems(array $purchasedItems): Customer
-    {
-        $this->purchasedItems = $purchasedItems;
-        return $this;
     }
 
     /**
@@ -119,5 +115,11 @@ class Customer extends AbstractUser
             "phone" => $this->getPhone(),
             "passport" => $this->getPassport()
         ];
+    }
+
+    public static function createFromArray(array $data): Customer
+    {
+        return new static($data['customer_id'], $data['full_name'], $data['phone'], $data['birthdate'],
+            $data['passport'], $data['sex']);
     }
 }

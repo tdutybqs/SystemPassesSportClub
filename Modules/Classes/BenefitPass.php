@@ -1,12 +1,34 @@
 <?php
 
-require_once __DIR__."/Pass.php";
+require_once __DIR__ . "/Pass.php";
 
 /**
  * Льготы
  */
 class BenefitPass extends Pass
 {
+    /**
+     * Конструктор льготного абонемента
+     * @inheritDoc
+     * @param $type_benefit
+     * @param $number_document
+     * @param $end
+     */
+    public function __construct(
+        int $id,
+        string $duration,
+        string $discount,
+        Customer $customer,
+        $type_benefit,
+        $number_document,
+        $end
+    ) {
+        parent::__construct($id, $duration, $discount, $customer);
+        $this->type_benefit = $type_benefit;
+        $this->number_document = $number_document;
+        $this->end = $end;
+    }
+
     /**
      * тип льготы
      * @var string
@@ -29,60 +51,27 @@ class BenefitPass extends Pass
      * Получить тип льготы
      * @return string
      */
-    public function getTypeBenefit(): string
+    final public function getTypeBenefit(): string
     {
         return $this->type_benefit;
-    }
-
-    /**
-     * Установить тип льготы
-     * @param string $type_benefit
-     * @return BenefitPass
-     */
-    public function setTypeBenefit(string $type_benefit): BenefitPass
-    {
-        $this->type_benefit = $type_benefit;
-        return $this;
     }
 
     /**
      * Получить номер документа
      * @return string
      */
-    public function getNumberDocument(): string
+    final public function getNumberDocument(): string
     {
         return $this->number_document;
-    }
-
-    /**
-     * Установить номер документа
-     * @param int $number_document
-     * @return BenefitPass
-     */
-    public function setNumberDocument(int $number_document): BenefitPass
-    {
-        $this->number_document = $number_document;
-        return $this;
     }
 
     /**
      * Получить дату окончания действия льготы
      * @return string
      */
-    public function getEnd(): string
+    final public function getEnd(): string
     {
         return $this->end;
-    }
-
-    /**
-     * Установить дату окончания действия льготы
-     * @param string $end
-     * @return BenefitPass
-     */
-    public function setEnd(string $end): BenefitPass
-    {
-        $this->end = $end;
-        return $this;
     }
 
     /**
@@ -93,10 +82,22 @@ class BenefitPass extends Pass
     {
         $jsonData = $this->getCustomer()->jsonSerialize();
         $jsonData['benefit'] = [
-             "type_benefit" => $this->getTypeBenefit(),
-             "number_document" => $this->getNumberDocument(),
-             "end" => $this->getEnd()
+            "type_benefit" => $this->getTypeBenefit(),
+            "number_document" => $this->getNumberDocument(),
+            "end" => $this->getEnd()
         ];
         return $jsonData;
+    }
+
+    /**
+     * Создание объекта из массива
+     * @param array $data
+     * @return Pass
+     */
+    public static function createFromArray(array $data): Pass
+    {
+//        return parent::createFromArray($data);
+        return new static($data['pass_id'], $data['duration'], $data['discount'], $data['customer'],
+            $data['type_benefit'], $data['number_document'], $data['end']);
     }
 }

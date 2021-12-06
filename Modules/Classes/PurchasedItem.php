@@ -33,84 +33,54 @@ class PurchasedItem implements JsonSerializable
     private int $price;
 
     /**
-     * Получить id купл программы
-     * @return int
+     * Конструктор купленного итема
+     * @param int $purchasedItemId - идентификатор пурчейза
+     * @param Pass $passId - абонемент
+     * @param Programme $programId - программа
+     * @param int $price - цена
      */
-    public function getPurchasedItemId(): int
+    public function __construct(int $purchasedItemId, Pass $passId, Programme $programId, int $price)
     {
-        return $this->purchasedItemId;
+        $this->passId = $passId;
+        $this->purchasedItemId = $purchasedItemId;
+        $this->programId = $programId;
+        $this->price = $price;
     }
 
     /**
-     * Установить id купл программы
-     * @param int $purchasedItemId
-     * @return PurchasedItem
+     * Получить id купл программы
+     * @return int
      */
-    public function setPurchasedItemId(int $purchasedItemId): PurchasedItem
+    final public function getPurchasedItemId(): int
     {
-        $this->purchasedItemId = $purchasedItemId;
-        return $this;
+        return $this->purchasedItemId;
     }
 
     /**
      * Получить id абонемента
      * @return Pass
      */
-    public function getPassId(): Pass
+    final public function getPassId(): Pass
     {
         return $this->passId;
-    }
-
-    /**
-     * Установить id абонемента
-     * @param Pass $passId
-     * @return PurchasedItem
-     */
-    public function setPassId(Pass $passId): PurchasedItem
-    {
-        $this->passId = $passId;
-        return $this;
     }
 
     /**
      * Получить id программы
      * @return Programme
      */
-    public function getProgramId(): Programme
+    final public function getProgramId(): Programme
     {
         return $this->programId;
     }
 
     /**
-     * Установить id программы
-     * @param Programme $programId
-     * @return PurchasedItem
-     */
-    public function setProgramId(Programme $programId): PurchasedItem
-    {
-        $this->programId = $programId;
-        return $this;
-    }
-
-
-    /**
      * Получить стоимость
      * @return int
      */
-    public function getPrice(): int
+    final public function getPrice(): int
     {
         return $this->price;
-    }
-
-    /**
-     * Установить стоимость
-     * @param int $price
-     * @return PurchasedItem
-     */
-    public function setPrice(int $price): PurchasedItem
-    {
-        $this->price = $price;
-        return $this;
     }
 
     /**
@@ -125,5 +95,15 @@ class PurchasedItem implements JsonSerializable
             'id_programme' => $this->getProgramId()->getId(),
             'price' => $this->getPrice(),
         ];
+    }
+
+    /**
+     * Создание объекта из массива
+     * @param $data
+     * @return static
+     */
+    public static function createFromArray($data): PurchasedItem
+    {
+        return new static($data['purchased_item_id'], $data['pass_id'], $data['id_programme'], $data['price']);
     }
 }

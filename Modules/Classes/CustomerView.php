@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__."/Customer.php";
 
-class CustomerView extends Customer
+require_once __DIR__ . "/Customer.php";
+
+final class CustomerView extends Customer
 {
     public function jsonSerialize(): array
     {

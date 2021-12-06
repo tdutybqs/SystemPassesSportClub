@@ -5,8 +5,21 @@ require_once __DIR__ . '/AbstractUser.php';
 /**
  * Сотрудники
  */
-class Employee extends AbstractUser
+final class Employee extends AbstractUser
 {
+    /**
+     * Конструктор сотрудник
+     * @inheritDoc
+     * @param string $position - позиция
+     * @param int $salary - зарплата
+     */
+    public function __construct(int $id, string $full_name, string $phone, string $position, int $salary)
+    {
+        parent::__construct($id, $full_name, $phone);
+        $this->position = $position;
+        $this->salary = $salary;
+    }
+
     /**
      * Должность сотрудника
      * @var string
@@ -23,43 +36,25 @@ class Employee extends AbstractUser
      * Получить позицию сотрудника
      * @return string
      */
-    public function getPosition(): string
+    final public function getPosition(): string
     {
         return $this->position;
-    }
-
-    /**
-     * Установить позицию сотрудника
-     * @param string $position
-     * @return Employee
-     */
-    public function setPosition(string $position): Employee
-    {
-        $this->position = $position;
-        return $this;
     }
 
     /**
      * Получить зарплату сотрудника
      * @return int
      */
-    public function getSalary(): int
+    final public function getSalary(): int
     {
         return $this->salary;
     }
 
     /**
-     * Установить зарплату сотруднику
-     * @param int $salary
-     * @return Employee
+     * Сериализация объекта
+     * @return mixed|void
      */
-    public function setSalary(int $salary): Employee
-    {
-        $this->salary = $salary;
-        return $this;
-    }
-
-    public function jsonSerialize()
+    public function jsonSerialize():array
     {
     }
 }
