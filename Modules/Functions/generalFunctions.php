@@ -68,13 +68,13 @@ function render(int $httpCode, array $data): void
  * Проверяет объект на соответствие заданным критериям
  *
  * @param array $request - параметры, проверяемые функцией
- * @param array $body - какой сущности соответствуют параметры
+ * @param array $criteria - какой сущности соответствуют параметры
  * @return bool
  */
-function checkCriteria(array $request, array $body): bool
+function checkCriteria(array $request, array $criteria): bool
 {
     foreach ($request as $key => $value) {
-        if (((string)$body[$key] === (string)$value) === false) {
+        if (((string)$criteria[$key] === (string)$value) === false) {
             return false;
         }
     }
