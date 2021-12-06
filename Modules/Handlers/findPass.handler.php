@@ -38,7 +38,7 @@ return static function (array $request, callable $logger): array {
     ];
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($passes as $pass) {
-            // Trash
+            // TODO начало сомнений
             if ($customersIdToInfo[$pass['customer_id']] === null) {
                 continue;
             }
@@ -51,7 +51,7 @@ return static function (array $request, callable $logger): array {
                 "passport" => $customersIdToInfo[$pass['customer_id']]->getPassport()
             ];
             $searchCriteriaMet = checkCriteria($request, array_merge($pass, $benefitPassObjToArray));
-            // End Trash
+            // TODO конец сомнениям
 
             if ($searchCriteriaMet) {
                 $passesObj = new Pass();

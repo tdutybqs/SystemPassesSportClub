@@ -1,7 +1,7 @@
 <?php
 
 include_once __DIR__ . "/../Functions/generalFunctions.php";
-require_once __DIR__ . "/../Classes/Customer.php";
+require_once __DIR__ . "/../Classes/CustomerView.php";
 require_once __DIR__ . "/../Classes/PurchasedItem.php";
 require_once __DIR__ . "/../Classes/Programme.php";
 
@@ -39,7 +39,7 @@ return static function (array $request, callable $logger): array {
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         $customerIdToInfo = [];
         foreach ($customers as $currentCustomer) {
-            $customerObj = new Customer();
+            $customerObj = new CustomerView();
             $customerObj->setId($currentCustomer['customer_id'])
                 ->setSex($currentCustomer['sex'])
                 ->setPhone($currentCustomer['phone'])
@@ -48,7 +48,7 @@ return static function (array $request, callable $logger): array {
                 ->setBirthdate($currentCustomer['birthdate']);
             $customerIdToInfo[$currentCustomer['customer_id']] = $customerObj;
         }
-
+        $customerList = [];
         $customerIdToPurchasedItem = [];
         $passesIdToInfo = [];
         foreach ($passes as $passInfo) {
@@ -73,7 +73,7 @@ return static function (array $request, callable $logger): array {
         foreach ($purchasedItems as $purchasedItem) {
             $customerId = $passesIdToInfo[$purchasedItem['pass_id']]->getCustomer()->getId();
 
-            // Trash
+            // TODO начало сомнений
             if ($customerIdToInfo[$customerId] === null) {
                 continue;
             }
@@ -86,13 +86,13 @@ return static function (array $request, callable $logger): array {
                 "passport" => $customerIdToInfo[$customerId]->getPassport()
             ];
             $searchCriteriaMet = checkCriteria($request, array_merge($purchasedItem, $customerInfo));
-            // End Trash
+            // TODO конец сомнениям
 
             if ($searchCriteriaMet) {
                 // Если такого кастомера еще нет в массиве, добавляем по id кастомера флаг true
                 if (!array_key_exists($customerId, $customerResult)) {
                     $customerResult[$customerId] = true;
-                    $result[] = $customerIdToInfo[$customerId];
+                    $customerList[] = $customerIdToInfo[$customerId];
                 }
 
                 if (!array_key_exists($customerId, $customerIdToPurchasedItem)) {
@@ -106,7 +106,15 @@ return static function (array $request, callable $logger): array {
                 $customerIdToPurchasedItem[$customerId][] = $purchasedItemObj;
             }
         }
-        $result = $customerIdToPurchasedItem;
+
+        //TODO поле экспериментов
+        //customerList - список всех клиентов, которые нам подходят
+        //customerIdToPurchasedItem - список всех purchased_item, которые нам подходят. Ключ - id customer
+        foreach ($customerList as &$currentCustomer)
+        {
+            $currentCustomer->setPurchasedItems($customerIdToPurchasedItem[$currentCustomer->getId()]);
+        }
+        $result = $customerList;
 
         $logger('Найдено ' . count($result) . ' объектов.');
         return [

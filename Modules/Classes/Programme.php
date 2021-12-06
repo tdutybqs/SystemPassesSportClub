@@ -115,10 +115,17 @@ class Programme implements JsonSerializable
         return $this;
     }
 
+    /**
+     * Реализация функции jsonSerialize
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
-          'test'
+            'id_programme' => $this->getId(),
+            'name' => $this->getName(),
+            'duration' => $this->getDuration(),
+            'discount' => $this->getDiscount()
         ];
     }
 }

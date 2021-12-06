@@ -6,7 +6,8 @@ GET http://localhost:8080/purchased_items?customer_id=1
      client.assert(response.status === 200, "Ожидается код '200'. Был получен код '" + response.status + "'.");
      client.assert(response.contentType.mimeType === "application/json", "Ожидаю application/type. Фактически: " +
      response.contentType.mimeType);
-     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "В ответе есть один элемент");
+     client.assert(response.body.hasOwnProperty("length") && response.body.length === 1, "Ожидался 1 элемент. " +
+      "Было получено " + response.body.length);
      client.assert(response.body[0]['customer_id'] === 1, "id клиента некорректен");
      client.assert(response.body[0]['full_name'] === "Кузнецова Маргарита Александровна", "ФИО клиента некорректно");
      client.assert(response.body[0]['sex'] === "ж", "Пол клиента некорректен");

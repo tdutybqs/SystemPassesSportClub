@@ -85,6 +85,10 @@ class BenefitPass extends Pass
         return $this;
     }
 
+    /**
+     * Реализация функции jsonSerialize
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         $jsonData = $this->getCustomer()->jsonSerialize();

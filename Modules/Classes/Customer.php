@@ -85,7 +85,31 @@ class Customer extends AbstractUser
         return $this;
     }
 
-    public function jsonSerialize():array
+    private array $purchasedItems;
+
+    /**
+     * @return array
+     */
+    public function getPurchasedItems(): array
+    {
+        return $this->purchasedItems;
+    }
+
+    /**
+     * @param array $purchasedItems
+     * @return Customer
+     */
+    public function setPurchasedItems(array $purchasedItems): Customer
+    {
+        $this->purchasedItems = $purchasedItems;
+        return $this;
+    }
+
+    /**
+     * Реализация функции jsonSerialize
+     * @return array
+     */
+    public function jsonSerialize(): array
     {
         return [
             "customer_id" => $this->getId(),

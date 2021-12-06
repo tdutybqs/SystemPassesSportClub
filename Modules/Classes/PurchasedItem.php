@@ -7,7 +7,7 @@ require_once __DIR__ . "/Pass.php";
  * Купленные продукта
  *
  */
-class PurchasedItem extends Programme
+class PurchasedItem implements JsonSerializable
 {
     /**
      * ID абонемента
@@ -113,15 +113,17 @@ class PurchasedItem extends Programme
         return $this;
     }
 
+    /**
+     * Реализация функции jsonSerialize
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
-            'purchased_items' => [
-                'purchased_item_id' => $this->getPurchasedItemId(),
-                'pass_id' => $this->getPassId()->getId(),
-                'id_programme' => $this->getProgramId()->getId(),
-                'price' => $this->getPrice(),
-            ]
+            'purchased_item_id' => $this->getPurchasedItemId(),
+            'pass_id' => $this->getPassId()->getId(),
+            'id_programme' => $this->getProgramId()->getId(),
+            'price' => $this->getPrice(),
         ];
     }
 }

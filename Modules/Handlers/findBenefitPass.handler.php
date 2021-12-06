@@ -42,7 +42,7 @@ return static function (array $request, callable $logger): array {
         }
 
         foreach ($customers as $customer) {
-            // Trash
+            // TODO начало сомнений
             if ($customerIdToBenefitPass[$customer['customer_id']] === null) {
                 continue;
             }
@@ -52,7 +52,7 @@ return static function (array $request, callable $logger): array {
                 'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
             ];
             $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request, array_merge($customer, $benefitPassObjToArray));
-            // End Trash
+            // TODO конец сомнениям
 
             if ($benefitPassPurchaseReportsMeetSearchCriteria && $customerIdToBenefitPass[$customer["customer_id"]] !== null) {
                 $customerObj = new Customer();

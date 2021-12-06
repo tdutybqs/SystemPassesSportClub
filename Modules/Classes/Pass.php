@@ -138,6 +138,10 @@ class Pass implements JsonSerializable
         return $this;
     }
 
+    /**
+     * Реализация функции jsonSerialize
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [

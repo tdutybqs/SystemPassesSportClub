@@ -50,6 +50,8 @@ function loggerInFile(string $errMsg): void
 }
 
 /**
+ * Отображение данных
+ *
  * @param int $httpCode - http код
  * @param array $data - данные, которые мы хотим отобразить
  * @throws JsonException
@@ -67,24 +69,21 @@ function render(int $httpCode, array $data): void
  *
  * @param array $request - параметры, проверяемые функцией
  * @param array $body - какой сущности соответствуют параметры
- * @return bool|null
+ * @return bool
  */
-function checkCriteria(array $request, array $body): ?bool
+function checkCriteria(array $request, array $body): bool
 {
-    $criteriaMeet = true;
     foreach ($request as $key => $value) {
-        if (!array_key_exists($key, $body)) {
-            return null;
-        }
-        $criteriaMeet = ($body[$key] === null ? null : (string)$body[$key] === (string)$value);
-        if ($criteriaMeet === false) {
+        if (((string)$body[$key] === (string)$value) === false) {
             return false;
         }
     }
-    return $criteriaMeet === null ? null : true;
+    return true;
 }
 
 /**
+ * Функция работает некорректно. Не помню в чем проблема. Надо удалить или починить
+ *
  * @param array $request - параметры, переданные пользователем
  * @param string $splitter - разделитель
  * @param bool $beforeNeedle - false - после разделителя, true - до разделителя
