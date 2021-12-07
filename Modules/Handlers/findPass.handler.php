@@ -6,15 +6,15 @@ require_once __DIR__ . "/../Classes/Customer.php";
 
 /**
  * Функция, показывающая абонементы пользователей
- *
  * @param array request - параметры, которые передает пользователь
  * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array {
-    $passes = loadData(__DIR__ . "/../../Jsons/pass.json");
-    $customers = loadData(__DIR__ . "/../../Jsons/customers.json");
+return static function (array $request, callable $logger, AppConfig $appConfig): array {
+    $passes = loadData($appConfig->getPathToPass());
+    $customers = loadData($appConfig->getPathToCustomers());
 
     $logger('Переход на /pass выполнен');
     $customersIdToInfo = [];

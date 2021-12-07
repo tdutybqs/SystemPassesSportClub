@@ -2,21 +2,24 @@
 
 require_once __DIR__ . "/../Classes/BenefitPass.php";
 require_once __DIR__ . "/../Classes/Customer.php";
+require_once __DIR__ . "/../Classes/AppConfig.php";
+
 include_once __DIR__ . "/../Functions/generalFunctions.php";
+
 
 /**
  * Функция обработки поиска льгот
- *
  * @param array request - параметры, которые передает пользователь
  * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param AppConfig $appConfig
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array {
+return static function (array $request, callable $logger, AppConfig $appConfig): array {
     $logger('Переход на: /benefit_pass выполнен.');
 
-    $benefitPasses = loadData(__DIR__ . "/../../Jsons/benefit_pass.json");
-    $customers = loadData(__DIR__ . "/../../Jsons/customers.json");
+    $benefitPasses = loadData($appConfig->getPathToBenefitPass());
+    $customers = loadData($appConfig->getPathToCustomers());
 
     $findCustomers = [];
     $paramsValidation = [

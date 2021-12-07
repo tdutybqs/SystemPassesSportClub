@@ -6,16 +6,16 @@ require_once __DIR__ . "/../Classes/Programme.php";
 
 /**
  * Функция обработки поиска программ
- *
  * @param array request - параметры, которые передает пользователь
  * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array {
+return static function (array $request, callable $logger, AppConfig $appConfig): array {
     $logger('Переход на /programmes выполнен ');
 
-    $programmes = loadData(__DIR__ . "/../../Jsons/programmes.json");
+    $programmes = loadData($appConfig->getPathToProgrammes());
 
     $findProgrammes = [];
     $paramsValidation = [

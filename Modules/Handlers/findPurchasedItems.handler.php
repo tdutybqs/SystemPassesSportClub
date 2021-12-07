@@ -5,22 +5,21 @@ require_once __DIR__ . "/../Classes/CustomerView.php";
 require_once __DIR__ . "/../Classes/PurchasedItem.php";
 require_once __DIR__ . "/../Classes/Programme.php";
 
-
 /**
  * Поиск покупаемых программ пользователем
- *
  * @param array request - параметры, которые передает пользователь
  * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger): array {
+return static function (array $request, callable $logger, AppConfig $appConfig): array {
     $customerResult = [];
 
-    $passes = loadData(__DIR__ . "/../../Jsons/pass.json");
-    $customers = loadData(__DIR__ . "/../../Jsons/customers.json");
-    $purchasedItems = loadData(__DIR__ . "/../../Jsons/purchased_item.json");
-    $programmes = loadData(__DIR__ . "/../../Jsons/programmes.json");
+    $passes = loadData($appConfig->getPathToPass());
+    $customers = loadData($appConfig->getPathToCustomers());
+    $purchasedItems = loadData($appConfig->getPathToPurchasedItems());
+    $programmes = loadData($appConfig->getPathToProgrammes());
 
     $logger('Переход на /purchased_items выполнен');
 
