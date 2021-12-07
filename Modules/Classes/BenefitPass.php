@@ -97,6 +97,20 @@ class BenefitPass extends Pass
     public static function createFromArray(array $data): Pass
     {
 //        return parent::createFromArray($data);
+        $requiredFields = [
+            'end',
+            'number_document',
+            'type_benefit',
+            'pass_id',
+            'duration',
+            'discount',
+            'customer'
+        ];
+        $missingFields = array_diff($requiredFields, array_keys($data));
+        if (count($missingFields) > 0){
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new Exception($errMsg);
+        }
         return new static($data['pass_id'], $data['duration'], $data['discount'], $data['customer'],
             $data['type_benefit'], $data['number_document'], $data['end']);
     }

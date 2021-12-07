@@ -101,9 +101,21 @@ class PurchasedItem implements JsonSerializable
      * Создание объекта из массива
      * @param $data
      * @return static
+     * @throws Exception
      */
     public static function createFromArray($data): PurchasedItem
     {
+        $requiredFields = [
+            'purchased_item_id',
+            'pass_id',
+            'id_programme',
+            'price'
+        ];
+        $missingFields = array_diff($requiredFields, array_keys($data));
+        if (count($missingFields) > 0){
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new Exception($errMsg);
+        }
         return new static($data['purchased_item_id'], $data['pass_id'], $data['id_programme'], $data['price']);
     }
 }

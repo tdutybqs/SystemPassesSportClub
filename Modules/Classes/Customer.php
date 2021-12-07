@@ -119,6 +119,19 @@ class Customer extends AbstractUser
 
     public static function createFromArray(array $data): Customer
     {
+        $requiredFields = [
+            'customer_id',
+            'full_name',
+            'sex',
+            'birthdate',
+            'phone',
+            'passport'
+        ];
+        $missingFields = array_diff($requiredFields, array_keys($data));
+        if (count($missingFields) > 0) {
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new Exception($errMsg);
+        }
         return new static($data['customer_id'], $data['full_name'], $data['phone'], $data['birthdate'],
             $data['passport'], $data['sex']);
     }

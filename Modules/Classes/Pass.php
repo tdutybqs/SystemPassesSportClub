@@ -104,6 +104,17 @@ class Pass implements JsonSerializable
      */
     public static function createFromArray(array $data): Pass
     {
+        $requiredFields = [
+            'pass_id',
+            'duration',
+            'discount',
+            'customer'
+        ];
+        $missingFields = array_diff($requiredFields, array_keys($data));
+        if (count($missingFields) > 0){
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new Exception($errMsg);
+        }
         return new Pass($data['pass_id'], $data['duration'], $data['discount'], $data['customer']);
     }
 

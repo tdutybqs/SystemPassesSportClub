@@ -99,9 +99,21 @@ class Programme implements JsonSerializable
      * Создание объекта из массива
      * @param array $data
      * @return Programme
+     * @throws Exception
      */
     public static function createFromArray(array $data): Programme
     {
+        $requiredFields = [
+            'id_programme',
+            'name',
+            'duration',
+            'discount'
+        ];
+        $missingFields = array_diff($requiredFields, array_keys($data));
+        if (count($missingFields) > 0) {
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new Exception($errMsg);
+        }
         return new static($data['id_programme'], $data['name'], $data['duration'], $data['discount']);
     }
 }

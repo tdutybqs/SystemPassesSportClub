@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/../../Modules/Classes/AppConfig.php";
+require_once __DIR__ . "/../../Modules/Classes/AppConfig.php";
 
 /**
  * Реализация веб приложения
@@ -13,18 +13,28 @@ require_once __DIR__."/../../Modules/Classes/AppConfig.php";
  */
 function app(array $handlers, string $requestUri, array $request, callable $logger, AppConfig $appConfig): array
 {
-    $urlPath = parse_url($requestUri, PHP_URL_PATH);
-    $logger("Переход на " . urldecode($requestUri));
+    try {
+        $urlPath = parse_url($requestUri, PHP_URL_PATH);
+        $logger("Переход на " . urldecode($requestUri));
 
-    if (array_key_exists($urlPath, $handlers)) {
-        $result = $handlers[$urlPath]($request, $logger, $appConfig);
-    } else {
+        if (array_key_exists($urlPath, $handlers)) {
+            $result = $handlers[$urlPath]($request, $logger, $appConfig);
+        } else {
+            $result = [
+                'httpCode' => 404,
+                'result' => [
+                    'status' => 'fail',
+                    'message' => 'unsupported request'
+                ]
+            ];
+        }
+    } catch (Throwable $e) {
         $result = [
-            'httpCode' => 404,
+            'httpCode' => 500,
             'result' => [
                 'status' => 'fail',
-                'message' => 'unsupported request'
-            ]
+                'message' => $e->getMessage()
+            ],
         ];
     }
     return $result;
