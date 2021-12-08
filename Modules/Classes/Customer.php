@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/AbstractUser.php";
+require_once __DIR__ . "/Exceptions/InvalidFilePath.php";
+require_once __DIR__ . "/Exceptions/InvalidDataStructureException.php";
 
 /**
  * Клиент
@@ -117,6 +119,12 @@ class Customer extends AbstractUser
         ];
     }
 
+    /**
+     * Создание объекта из массива
+     * @param array $data
+     * @return Customer
+     * @throws InvalidDataStructureException - некорректная структура файла
+     */
     public static function createFromArray(array $data): Customer
     {
         $requiredFields = [
@@ -127,11 +135,14 @@ class Customer extends AbstractUser
             'phone',
             'passport'
         ];
+
         $missingFields = array_diff($requiredFields, array_keys($data));
+
         if (count($missingFields) > 0) {
             $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
-            throw new Exception($errMsg);
+            throw new InvalidDataStructureException($errMsg);
         }
+
         return new static($data['customer_id'], $data['full_name'], $data['phone'], $data['birthdate'],
             $data['passport'], $data['sex']);
     }

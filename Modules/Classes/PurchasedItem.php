@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/Programme.php";
 require_once __DIR__ . "/Pass.php";
+require_once __DIR__."/Exceptions/InvalidFilePath.php";
+require_once __DIR__."/Exceptions/InvalidDataStructureException.php";
 
 /**
  * Купленные продукта
@@ -101,7 +103,7 @@ class PurchasedItem implements JsonSerializable
      * Создание объекта из массива
      * @param $data
      * @return static
-     * @throws Exception
+     * @throws InvalidDataStructureException - некорректная структура файла
      */
     public static function createFromArray($data): PurchasedItem
     {
@@ -111,11 +113,14 @@ class PurchasedItem implements JsonSerializable
             'id_programme',
             'price'
         ];
+
         $missingFields = array_diff($requiredFields, array_keys($data));
+
         if (count($missingFields) > 0){
             $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
-            throw new Exception($errMsg);
+            throw new InvalidDataStructureException($errMsg);
         }
+
         return new static($data['purchased_item_id'], $data['pass_id'], $data['id_programme'], $data['price']);
     }
 }

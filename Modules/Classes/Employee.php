@@ -1,7 +1,10 @@
 <?php
 
 require_once __DIR__ . '/AbstractUser.php';
+require_once __DIR__."/Exceptions/InvalidFilePath.php";
+require_once __DIR__."/Exceptions/InvalidDataStructureException.php";
 
+//TODO заброшенный класс. Он нигде не используется. Работа над ним не ведется
 /**
  * Сотрудники
  */

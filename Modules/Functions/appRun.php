@@ -1,24 +1,34 @@
 <?php
 
 require_once __DIR__ . "/../../Modules/Classes/AppConfig.php";
+require_once __DIR__ . "/../../Modules/Classes/Exceptions/InvalidDataStructureException.php";
+require_once __DIR__ . "/../../Modules/Classes/Exceptions/InvalidFilePath.php";
 
 /**
  * Реализация веб приложения
  * @param array $handlers
  * @param string $requestUri - uri запроса
- * @param array $request
  * @param callable logger - функция, инкапсулирующая логику логгера
- * @param AppConfig $appConfig - конфиг приложения
+ * @param callable $appConfigFactory - фабрика, реализующая логику создания конфига приложения
  * @return array
  */
-function app(array $handlers, string $requestUri, array $request, callable $logger, AppConfig $appConfig): array
+function app(array $handlers, string $requestUri, callable $logger, callable $appConfigFactory): array
 {
     try {
+        $query = parse_url($requestUri, PHP_URL_QUERY);
+        $requestParams = [];
+        parse_str($query, $requestParams);
+
+        $appConfig = $appConfigFactory();
+        if (!($appConfig instanceof AppConfig)) {
+            throw new Exception("Некорректный конфиг");
+        }
+
         $urlPath = parse_url($requestUri, PHP_URL_PATH);
         $logger("Переход на " . urldecode($requestUri));
 
         if (array_key_exists($urlPath, $handlers)) {
-            $result = $handlers[$urlPath]($request, $logger, $appConfig);
+            $result = $handlers[$urlPath]($requestParams, $logger, $appConfig);
         } else {
             $result = [
                 'httpCode' => 404,
@@ -28,6 +38,14 @@ function app(array $handlers, string $requestUri, array $request, callable $logg
                 ]
             ];
         }
+    } catch (InvalidDataStructureException $e) {
+        $result = [
+            'httpCode' => 503,
+            'result' => [
+                'status' => 'fail',
+                'message' => $e->getMessage()
+            ],
+        ];
     } catch (Throwable $e) {
         $result = [
             'httpCode' => 500,

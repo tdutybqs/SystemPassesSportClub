@@ -1,10 +1,19 @@
 <?php
 
+require_once __DIR__."/Exceptions/InvalidDataStructureException.php";
+require_once __DIR__."/Exceptions/InvalidFilePath.php";
+
 /**
  * Конфиг приложения
  */
 class AppConfig
 {
+    /**
+     * Путь до файла с данными о сотрудниках
+     * @var string
+     */
+    private string $pathToEmployees = __DIR__ . "/../../Jsons/employees.json";
+
     /**
      * Путь до файла с данными о льготах
      * @var string
@@ -35,6 +44,28 @@ class AppConfig
      */
     private string $pathToProgrammes = __DIR__ . "/../../Jsons/programmes.json";
 
+    /**
+     * Получить путь до файла с данными о сотрудниках
+     * @return string
+     */
+    public function getPathToEmployees(): string
+    {
+        return $this->pathToEmployees;
+    }
+
+    /**
+     * Установить путь до файла с данными о сотрудниках
+     * @param string $pathToEmployees
+     * @return AppConfig
+     * @throws Exception - данные некорректны
+     */
+    private function setPathToEmployees(string $pathToEmployees): AppConfig
+    {
+        $this->validateFilePath($pathToEmployees);
+        $this->pathToEmployees = $pathToEmployees;
+        return $this;
+    }
+
 
     /** Получить путь до файла с данными о льготах
      * @return string
@@ -48,9 +79,11 @@ class AppConfig
      * Установить путь до файла с данными о льготах
      * @param string $pathToBenefitPass
      * @return AppConfig
+     * @throws Exception - данные некорректны
      */
-    public function setPathToBenefitPass(string $pathToBenefitPass): AppConfig
+    private function setPathToBenefitPass(string $pathToBenefitPass): AppConfig
     {
+        $this->validateFilePath($pathToBenefitPass);
         $this->pathToBenefitPass = $pathToBenefitPass;
         return $this;
     }
@@ -68,9 +101,11 @@ class AppConfig
      * Установить путь до файла с данными о клиентах
      * @param string $pathToCustomers
      * @return AppConfig
+     * @throws Exception - данные некорректны
      */
-    public function setPathToCustomers(string $pathToCustomers): AppConfig
+    private function setPathToCustomers(string $pathToCustomers): AppConfig
     {
+        $this->validateFilePath($pathToCustomers);
         $this->pathToCustomers = $pathToCustomers;
         return $this;
     }
@@ -88,9 +123,11 @@ class AppConfig
      * Установить путь до файла с данными об абонементах
      * @param string $pathToPass
      * @return AppConfig
+     * @throws Exception - данные некорректны
      */
-    public function setPathToPass(string $pathToPass): AppConfig
+    private function setPathToPass(string $pathToPass): AppConfig
     {
+        $this->validateFilePath($pathToPass);
         $this->pathToPass = $pathToPass;
         return $this;
     }
@@ -108,9 +145,11 @@ class AppConfig
      * Установить путь до файла с данными о программах
      * @param string $pathToProgrammes
      * @return AppConfig
+     * @throws Exception - данные некорректны
      */
-    public function setPathToProgrammes(string $pathToProgrammes): AppConfig
+    private function setPathToProgrammes(string $pathToProgrammes): AppConfig
     {
+        $this->validateFilePath($pathToProgrammes);
         $this->pathToProgrammes = $pathToProgrammes;
         return $this;
     }
@@ -128,10 +167,48 @@ class AppConfig
      * Установить путь до файла с купленными пурчейзами
      * @param string $pathToPurchasedItems
      * @return AppConfig
+     * @throws Exception - данные некорректны
      */
-    public function setPathToPurchasedItems(string $pathToPurchasedItems): AppConfig
+    private function setPathToPurchasedItems(string $pathToPurchasedItems): AppConfig
     {
+        $this->validateFilePath($pathToPurchasedItems);
         $this->pathToPurchasedItems = $pathToPurchasedItems;
         return $this;
+    }
+
+    /**
+     * Валидация пути до файла
+     * @param string $path
+     * @return void
+     * @throws Exception - если файл не найден
+     */
+    private function validateFilePath(string $path): void
+    {
+        if (false === file_exists($path)) {
+            throw new InvalidFilePath('Некорректный путь до файла с данными');
+        }
+    }
+
+    /**
+     * Создает конфиг приложения из массива
+     * @param array $config
+     * @return static
+     * @uses AppConfig::setPathToBenefitPass()
+     * @uses \AppConfig::setPathToCustomers()
+     * @uses \AppConfig::setPathToPass()
+     * @uses \AppConfig::setPathToProgrammes()
+     * @uses \AppConfig::setPathToPurchasedItems()
+     * @uses \AppConfig::setPathToEmployees()
+     */
+    public static function createFromArray(array $config): self
+    {
+        $appConfig = new self();
+        foreach ($config as $key => $value) {
+            if (property_exists($appConfig, $key)) {
+                $setter = 'set' . ucfirst($key);
+                $appConfig->{$setter}($value);
+            }
+        }
+        return $appConfig;
     }
 }

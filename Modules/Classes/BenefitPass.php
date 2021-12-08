@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/Pass.php";
+require_once __DIR__."/Exceptions/InvalidFilePath.php";
+require_once __DIR__."/Exceptions/InvalidDataStructureException.php";
 
 /**
  * Льготы
@@ -93,10 +95,10 @@ class BenefitPass extends Pass
      * Создание объекта из массива
      * @param array $data
      * @return Pass
+     * @throws InvalidDataStructureException - некорректная структура файла
      */
     public static function createFromArray(array $data): Pass
     {
-//        return parent::createFromArray($data);
         $requiredFields = [
             'end',
             'number_document',
@@ -106,11 +108,14 @@ class BenefitPass extends Pass
             'discount',
             'customer'
         ];
+
         $missingFields = array_diff($requiredFields, array_keys($data));
+
         if (count($missingFields) > 0){
             $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
-            throw new Exception($errMsg);
+            throw new InvalidDataStructureException($errMsg);
         }
+
         return new static($data['pass_id'], $data['duration'], $data['discount'], $data['customer'],
             $data['type_benefit'], $data['number_document'], $data['end']);
     }

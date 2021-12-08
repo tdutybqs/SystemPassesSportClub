@@ -36,19 +36,25 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
 
     if (null === ($result = paramTypeValidation($paramsValidation, $request))) {
         foreach ($customers as $customer) {
+
             $customerIdToBenefitPass = [];
             foreach ($benefitPasses as $benefitPass) {
                 $benefitPass['customer'] = Customer::createFromArray($customer);
                 $customerIdToBenefitPass[$benefitPass['customer_id']] = BenefitPass::createFromArray($benefitPass);
             }
-            if ($customerIdToBenefitPass[$customer['customer_id']] === null) {
+
+            if (array_key_exists($customer['customer_id'], $customerIdToBenefitPass) && $customerIdToBenefitPass[$customer['customer_id']] === null) {
                 continue;
             }
-            $benefitPassObjToArray = [
-                'type_benefit' => $customerIdToBenefitPass[$customer['customer_id']]->getTypeBenefit(),
-                'number_document' => $customerIdToBenefitPass[$customer['customer_id']]->getNumberDocument(),
-                'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
-            ];
+
+            $benefitPassObjToArray = [];
+            if (array_key_exists($customer['customer_id'], $customerIdToBenefitPass)){
+                $benefitPassObjToArray = [
+                    'type_benefit' => $customerIdToBenefitPass[$customer['customer_id']]->getTypeBenefit(),
+                    'number_document' => $customerIdToBenefitPass[$customer['customer_id']]->getNumberDocument(),
+                    'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
+                ];
+            }
             $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request,
                 array_merge($customer, $benefitPassObjToArray));
 
@@ -56,6 +62,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
                 $findCustomers[] =  $customerIdToBenefitPass[$customer['customer_id']];
             }
         }
+
         $logger('Найдено ' . count($findCustomers) . ' объектов.');
         return [
             'httpCode' => 200,
