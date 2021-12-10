@@ -40,16 +40,6 @@ function paramTypeValidation(array $validateParameters, array $params): ?array
 }
 
 /**
- * Логирует текстовое сообщение
- *
- * @param string $errMsg - логируемое сообщение
- */
-function loggerInFile(string $errMsg): void
-{
-    file_put_contents(__DIR__ . "/../../var/log/app.log", $errMsg . "\n", FILE_APPEND);
-}
-
-/**
  * Отображение данных
  *
  * @param int $httpCode - http код

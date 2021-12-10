@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../src/Infrastructure/AppConfig.php';
 require_once __DIR__ . '/../../src/Infrastructure/appRun.php';
+require_once __DIR__ . '/../../src/Infrastructure/Logger/NullLogger/Logger.php';
+require_once __DIR__ . '/../../src/Infrastructure/Logger/Factory.php';
+
 
 /**
  * Вычисляет расхождение массивов с дополнительной проверкой индекса. Поддержка многомерных массивов
@@ -44,6 +47,9 @@ class UnitTest
      */
     private static function testDataProvider(): array
     {
+        $loggerFactory = static function (): LoggerInterface {
+            return new Logger();
+        };
         $handlers = include __DIR__ . '/../../config/request.handler.php';
         return [
             [
@@ -51,8 +57,27 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/benefit_pass?customer_id=5',
+                    'Factory::create',
                     static function () {
-                    },
+                        $config = include __DIR__ . '/../../config/dev/config.php';
+                        $config['pathToBenefitPass'] = __DIR__ . '/../data/broken_benefit_pass.json';
+                        return AppConfig::createFromArray($config);
+                    }
+                ],
+                'out' => [
+                    'httpCode' => 503,
+                    'result' => [
+                        'status' => 'fail',
+                        'message' => 'Отсутствуют обязательные элементы: end'
+                    ]
+                ]
+            ],
+            [
+                'testName' => 'Тестирование ситуации когда данные о льготах некорректны. Нет поля - end',
+                'in' => [
+                    $handlers,
+                    'http://localhost:8080/benefit_pass?customer_id=5',
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToBenefitPass'] = __DIR__ . '/../data/broken_benefit_pass.json';
@@ -72,8 +97,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/benefit_pass?customer_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToBenefitPass'] = __DIR__ . '/../data/broken_benаefit_pass.json';
@@ -93,8 +117,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/pass?customer_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToPass'] = __DIR__ . '/../data/broken_pass.json';
@@ -114,8 +137,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/pass?customer_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToPass'] = __DIR__ . '/../data/brokпen_pass.json';
@@ -135,8 +157,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/programmes?name=Суставная гимнастика',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToProgrammes'] = __DIR__ . '/../data/broken_programmes.json';
@@ -156,8 +177,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/pass?customer_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToProgrammes'] = __DIR__ . '/../data/brokпen_pafss.json';
@@ -199,8 +219,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/pass?customer_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToCustomers'] = __DIR__ . '/../data/brokпen_pafss.json';
@@ -220,8 +239,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/purchased_items?customer_id=1',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToPurchasedItems'] = __DIR__ . '/../data/broken_purchased_item.json';
@@ -241,8 +259,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/purchased_items?customer_id=1',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToPurchasedItems'] = __DIR__ . '/../data/brokпen_pafss.json';
@@ -284,8 +301,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/pass?pass_id=5',
-                    static function () {
-                    },
+                    $loggerFactory,
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToEmployees'] = __DIR__ . '/../data/employeesf.json';

@@ -5,15 +5,18 @@ require_once __DIR__ . "/../Entity/CustomerView.php";
 require_once __DIR__ . "/../Entity/PurchasedItem.php";
 require_once __DIR__ . "/../Entity/Programme.php";
 
+require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
+require_once __DIR__ . "/../Infrastructure/AppConfig.php";
+
 /**
  * Поиск покупаемых программ пользователем
  * @param array request - параметры, которые передает пользователь
- * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger, AppConfig $appConfig): array {
+return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
     $customerResult = [];
 
     $passes = loadData($appConfig->getPathToPass());
@@ -21,7 +24,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
     $purchasedItems = loadData($appConfig->getPathToPurchasedItems());
     $programmes = loadData($appConfig->getPathToProgrammes());
 
-    $logger('Переход на /purchased_items выполнен');
+    $logger->log('Переход на /purchased_items выполнен');
 
     $paramsValidation = [
         'customer_id' => 'incorrect customer_id',
@@ -91,7 +94,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
         }
         $result = $customerList;
 
-        $logger('Найдено ' . count($result) . ' объектов.');
+        $logger->log('Найдено ' . count($result) . ' объектов.');
         return [
             'httpCode' => 200,
             'result' => $result

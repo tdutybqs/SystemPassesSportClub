@@ -5,18 +5,18 @@ require_once __DIR__ . "/../Entity/Customer.php";
 require_once __DIR__ . "/../Infrastructure/AppConfig.php";
 
 include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
-
+require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
 
 /**
  * Функция обработки поиска льгот
  * @param array request - параметры, которые передает пользователь
- * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger, AppConfig $appConfig): array {
-    $logger('Переход на: /benefit_pass выполнен.');
+return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
+    $logger->log('Переход на: /benefit_pass выполнен.');
 
     $benefitPasses = loadData($appConfig->getPathToBenefitPass());
     $customers = loadData($appConfig->getPathToCustomers());
@@ -63,7 +63,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
             }
         }
 
-        $logger('Найдено ' . count($findCustomers) . ' объектов.');
+        $logger->log('Найдено ' . count($findCustomers) . ' объектов.');
         return [
             'httpCode' => 200,
             'result' => $findCustomers

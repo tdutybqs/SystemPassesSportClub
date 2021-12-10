@@ -3,17 +3,19 @@
 include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
 require_once __DIR__ . "/../Entity/Programme.php";
 
+require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
+require_once __DIR__ . "/../Infrastructure/AppConfig.php";
 
 /**
  * Функция обработки поиска программ
  * @param array request - параметры, которые передает пользователь
- * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger, AppConfig $appConfig): array {
-    $logger('Переход на /programmes выполнен ');
+return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
+    $logger->log('Переход на /programmes выполнен ');
 
     $programmes = loadData($appConfig->getPathToProgrammes());
 
@@ -32,7 +34,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
                 $findProgrammes[] = Programme::createFromArray($programme);
             }
         }
-        $logger('Найдено ' . count($findProgrammes) . ' объектов.');
+        $logger->log('Найдено ' . count($findProgrammes) . ' объектов.');
         return [
             'httpCode' => 200,
             'result' => $findProgrammes

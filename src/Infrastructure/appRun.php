@@ -8,11 +8,11 @@ require_once __DIR__."/../Infrastructure/InvalidFilePath.php";
  * Реализация веб приложения
  * @param array $handlers
  * @param string $requestUri - uri запроса
- * @param callable logger - функция, инкапсулирующая логику логгера
+ * @param callable $loggerFactory - функция, инкапсулирующая логику логгера
  * @param callable $appConfigFactory - фабрика, реализующая логику создания конфига приложения
  * @return array
  */
-function app(array $handlers, string $requestUri, callable $logger, callable $appConfigFactory): array
+function app(array $handlers, string $requestUri, callable $loggerFactory, callable $appConfigFactory): array
 {
     try {
         $query = parse_url($requestUri, PHP_URL_QUERY);
@@ -21,11 +21,16 @@ function app(array $handlers, string $requestUri, callable $logger, callable $ap
 
         $appConfig = $appConfigFactory();
         if (!($appConfig instanceof AppConfig)) {
-            throw new Exception("Некорректный конфиг");
+            throw new UnexpectedValueException("Некорректный конфиг");
+        }
+
+        $logger = $loggerFactory($appConfig);
+        if (!($logger instanceof LoggerInterface)) {
+            throw new UnexpectedValueException("Некорректный логер");
         }
 
         $urlPath = parse_url($requestUri, PHP_URL_PATH);
-        $logger("Переход на " . urldecode($requestUri));
+        $logger->log("Переход на " . urldecode($requestUri));
 
         if (array_key_exists($urlPath, $handlers)) {
             $result = $handlers[$urlPath]($requestParams, $logger, $appConfig);

@@ -29,5 +29,15 @@ return [
     /**
      * Путь до файла с купленными пурчейзами
      */
-    'pathToPurchasedItems' => __DIR__ . "/../../data/purchased_item.json"
+    'pathToPurchasedItems' => __DIR__ . "/../../data/purchased_item.json",
+
+    /**
+     * Путь до файла с логами
+     */
+    'pathToLogFile' => __DIR__ . "/../../var/log/app.log",
+
+    /**
+     * Тип, использующегося логера
+     */
+    'loggerType' => 'fileLogger',
 ];

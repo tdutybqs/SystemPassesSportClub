@@ -4,19 +4,21 @@ include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
 require_once __DIR__ . "/../Entity/Pass.php";
 require_once __DIR__ . "/../Entity/Customer.php";
 
+require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
+
 /**
  * Функция, показывающая абонементы пользователей
  * @param array request - параметры, которые передает пользователь
- * @param callable $logger -  функция, инкапсулирующая логику логгера
+ * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig - конфиг приложения
  * @return array
  * @throws JsonException
  */
-return static function (array $request, callable $logger, AppConfig $appConfig): array {
+return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
     $passes = loadData($appConfig->getPathToPass());
     $customers = loadData($appConfig->getPathToCustomers());
 
-    $logger('Переход на /pass выполнен');
+    $logger->log('Переход на /pass выполнен');
     $customersIdToInfo = [];
     foreach ($customers as $currentCustomer) {
         $customersIdToInfo[$currentCustomer['customer_id']] = Customer::createFromArray($currentCustomer);
@@ -48,7 +50,7 @@ return static function (array $request, callable $logger, AppConfig $appConfig):
                 $findPasses[] = Pass::createFromArray($pass);
             }
         }
-        $logger('Найдено ' . count($findPasses) . ' объектов.');
+        $logger->log('Найдено ' . count($findPasses) . ' объектов.');
         return [
             'httpCode' => 200,
             'result' => $findPasses

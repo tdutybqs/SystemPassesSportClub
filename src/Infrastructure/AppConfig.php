@@ -15,6 +15,18 @@ class AppConfig
     private string $pathToEmployees = __DIR__ . "/../../data/employees.json";
 
     /**
+     * Путь до файла с логами
+     * @var string
+     */
+    private string $pathToLogFile;
+
+    /**
+     * Тип логера
+     * @var string
+     */
+    private string $loggerType;
+
+    /**
      * Путь до файла с данными о льготах
      * @var string
      */
@@ -51,6 +63,35 @@ class AppConfig
     public function getPathToEmployees(): string
     {
         return $this->pathToEmployees;
+    }
+
+    /**
+     * Получить тип логера
+     * @return string
+     */
+    public function getLoggerType(): string
+    {
+        return $this->loggerType;
+    }
+
+    /**
+     * Возвращает путь до файла с логами
+     * @return string
+     */
+    public function getPathToLogFile(): string
+    {
+        return $this->pathToLogFile;
+    }
+
+    /**
+     * Установить тип логера
+     * @param string $loggerType
+     * @return AppConfig
+     */
+    private function setLoggerType(string $loggerType): AppConfig
+    {
+        $this->loggerType = $loggerType;
+        return $this;
     }
 
     /**
@@ -199,6 +240,8 @@ class AppConfig
      * @uses \AppConfig::setPathToProgrammes()
      * @uses \AppConfig::setPathToPurchasedItems()
      * @uses \AppConfig::setPathToEmployees()
+     * @uses \AppConfig::setPathToLogFile()
+     * @uses \AppConfig::setLoggerType()
      */
     public static function createFromArray(array $config): self
     {
@@ -210,5 +253,18 @@ class AppConfig
             }
         }
         return $appConfig;
+    }
+
+    /**
+     * Установить путь до файла с логами
+     * @param string $pathToLogFile - путь до файла с логами
+     * @return AppConfig
+     * @throws Exception
+     */
+    private function setPathToLogFile(string $pathToLogFile): AppConfig
+    {
+        $this->validateFilePath($pathToLogFile);
+        $this->pathToLogFile = $pathToLogFile;
+        return $this;
     }
 }
