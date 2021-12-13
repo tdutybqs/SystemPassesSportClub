@@ -1,5 +1,5 @@
 ### 4 Клиент смотрит окончание абонемента
-GET http://localhost:8080/pass?pass_id=3
+GET http://192.168.210.250:8080/pass?pass_id=3
 
 > {%
  client.test("Клиент смотрит окончание абонемента", function (){
@@ -15,7 +15,7 @@ GET http://localhost:8080/pass?pass_id=3
 
 
 ### 4 Клиент смотрит окончание абонемента - срок
-GET http://localhost:8080/pass?duration=06.05.2021 - 06.05.2023
+GET http://192.168.210.250:8080/pass?duration=06.05.2021 - 06.05.2023
 
 > {%
  client.test("Клиент смотрит окончание абонемента - срок", function (){
@@ -38,7 +38,7 @@ GET http://localhost:8080/pass?duration=06.05.2021 - 06.05.2023
  %}
 
 ### 4 Клиент смотрит окончание абонемента - id пользователя
-GET http://localhost:8080/pass?customer_id=3
+GET http://192.168.210.250:8080/pass?customer_id=3
 
 > {%
  client.test("Клиент смотрит окончание абонемента - id пользователя", function (){
@@ -61,7 +61,7 @@ GET http://localhost:8080/pass?customer_id=3
  %}
 
 ### 4 Клиент смотрит окончание абонемента - discount
-GET http://localhost:8080/pass?discount=10%25
+GET http://192.168.210.250:8080/pass?discount=10%25
 
 > {%
  client.test("Клиент смотрит окончание абонемента - discount", function (){
@@ -84,7 +84,7 @@ GET http://localhost:8080/pass?discount=10%25
  %}
 
 ### 4 Клиент смотрит окончание абонемента - pass_id
-GET http://localhost:8080/pass?pass_id=4
+GET http://192.168.210.250:8080/pass?pass_id=4
 
 > {%
  client.test("Клиент смотрит окончание абонемента - discount", function (){
