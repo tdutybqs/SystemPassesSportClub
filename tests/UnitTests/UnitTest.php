@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../src/Infrastructure/AppConfig.php';
 require_once __DIR__ . '/../../src/Infrastructure/appRun.php';
 require_once __DIR__ . '/../../src/Infrastructure/Logger/NullLogger/Logger.php';
 require_once __DIR__ . '/../../src/Infrastructure/Logger/Factory.php';
-
+require_once __DIR__ . '/../../src/Infrastructure/Logger/LoggerInterface.php';
 
 /**
  * Вычисляет расхождение массивов с дополнительной проверкой индекса. Поддержка многомерных массивов

@@ -2,7 +2,6 @@
 
 require_once __DIR__ . "/../Infrastructure/AppConfig.php";
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
-require_once __DIR__."/../Infrastructure/InvalidFilePath.php";
 
 /**
  * Реализация веб приложения

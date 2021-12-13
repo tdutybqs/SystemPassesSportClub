@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
-require_once __DIR__."/../Infrastructure/InvalidFilePath.php";
 
 /**
  * Конфиг приложения
@@ -226,7 +225,7 @@ class AppConfig
     private function validateFilePath(string $path): void
     {
         if (false === file_exists($path)) {
-            throw new InvalidFilePath('Некорректный путь до файла с данными');
+            throw new Exception('Некорректный путь до файла с данными');
         }
     }
 

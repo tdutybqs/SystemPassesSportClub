@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . "/Pass.php";
-require_once __DIR__."/../Infrastructure/InvalidFilePath.php";
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
 
 /**
