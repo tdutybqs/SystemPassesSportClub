@@ -1,5 +1,5 @@
 ### Тестирование запроса без path
-GET http://192.168.210.250:8080/?pa=3
+GET http://localhost:8020/?pa=3
 
 > {%
 client.test("Тестирование запроса без path", function (){

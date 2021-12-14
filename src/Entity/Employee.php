@@ -1,5 +1,10 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
+
+use Exception;
+use EfTech\SportClub\Infrastructure\InvalidDataStructureException;
+
 require_once __DIR__ . '/AbstractUser.php';
 require_once __DIR__ . "/../Infrastructure/InvalidDataStructureException.php";
 
@@ -7,20 +12,8 @@ require_once __DIR__ . "/../Infrastructure/InvalidDataStructureException.php";
 /**
  * Сотрудники
  */
-final class Employee extends AbstractUser
+class Employee extends AbstractUser
 {
-    /**
-     * Конструктор сотрудник
-     * @inheritDoc
-     * @param string $position - позиция
-     * @param int $salary - зарплата
-     */
-    public function __construct(int $id, string $full_name, string $phone, string $position, int $salary)
-    {
-        parent::__construct($id, $full_name, $phone);
-        $this->position = $position;
-        $this->salary = $salary;
-    }
 
     /**
      * Должность сотрудника
@@ -33,6 +26,20 @@ final class Employee extends AbstractUser
      * @var int
      */
     private int $salary;
+
+
+    /**
+     * Конструктор сотрудник
+     * @inheritDoc
+     * @param string $position - позиция
+     * @param int $salary - зарплата
+     */
+    public function __construct(int $id, string $fullName, string $phone, string $position, int $salary)
+    {
+        parent::__construct($id, $fullName, $phone);
+        $this->position = $position;
+        $this->salary = $salary;
+    }
 
     /**
      * Получить позицию сотрудника
@@ -58,5 +65,26 @@ final class Employee extends AbstractUser
      */
     public function jsonSerialize():array
     {
+    }
+
+    public static function createFromArray(array $data): Employee
+    {
+        $requiredFields = [
+            'customer_id',
+            'full_name',
+            'phone',
+            'position',
+            'salary'
+        ];
+
+        $missingFields = array_diff($requiredFields, array_keys($data));
+
+        if (count($missingFields) > 0) {
+            $errMsg = sprintf('Отсутствуют обязательные элементы: %s', implode(',', $missingFields));
+            throw new InvalidDataStructureException($errMsg);
+        }
+
+        return new static($data['customer_id'], $data['full_name'], $data['phone'], $data['position'],
+            $data['salary']);
     }
 }

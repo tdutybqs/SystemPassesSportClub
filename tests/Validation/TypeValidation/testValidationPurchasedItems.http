@@ -1,5 +1,5 @@
 ### Тестирование ситуации, когда передали некорректный customer_id
-GET http://192.168.210.250:8080/purchased_items?customer_id[]=1
+GET http://localhost:8020/purchased_items?customer_id[]=1
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_id", function (){
@@ -14,7 +14,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_id[]=1
  %}
 
 ### Тестирование ситуации, когда передали некорректный customer_full_name
-GET http://192.168.210.250:8080/purchased_items?customer_full_name[]=Евгений
+GET http://localhost:8020/purchased_items?customer_full_name[]=Евгений
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_full_name", function (){
@@ -29,7 +29,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_full_name[]=Евген�
  %}
 
 ### Тестирование ситуации, когда передали некорректный customer_sex
-GET http://192.168.210.250:8080/purchased_items?customer_sex[]=м
+GET http://localhost:8020/purchased_items?customer_sex[]=м
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_full_name", function (){
@@ -44,7 +44,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_sex[]=м
  %}
 
 ### Тестирование ситуации, когда передали некорректный customer_birthdate
-GET http://192.168.210.250:8080/purchased_items?customer_birthdate[]=1
+GET http://localhost:8020/purchased_items?customer_birthdate[]=1
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_birthdate", function (){
@@ -59,7 +59,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_birthdate[]=1
  %}
 
 ### Тестирование ситуации, когда передали некорректный customer_phone
-GET http://192.168.210.250:8080/purchased_items?customer_phone[]=%2B3424234
+GET http://localhost:8020/purchased_items?customer_phone[]=%2B3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_birthdate", function (){
@@ -74,7 +74,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_phone[]=%2B3424234
  %}
 
 ### Тестирование ситуации, когда передали некорректный customer_passport
-GET http://192.168.210.250:8080/purchased_items?customer_passport[]=3424234
+GET http://localhost:8020/purchased_items?customer_passport[]=3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный customer_passport", function (){
@@ -89,7 +89,7 @@ GET http://192.168.210.250:8080/purchased_items?customer_passport[]=3424234
  %}
 
 ### Тестирование ситуации, когда передали некорректный price
-GET http://192.168.210.250:8080/purchased_items?price[]=3424234
+GET http://localhost:8020/purchased_items?price[]=3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный price", function (){
@@ -104,7 +104,7 @@ GET http://192.168.210.250:8080/purchased_items?price[]=3424234
  %}
 
 ### Тестирование ситуации, когда передали некорректный pass_id
-GET http://192.168.210.250:8080/purchased_items?pass_id[]=3424234
+GET http://localhost:8020/purchased_items?pass_id[]=3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный pass_id", function (){
@@ -119,7 +119,7 @@ GET http://192.168.210.250:8080/purchased_items?pass_id[]=3424234
  %}
 
 ### Тестирование ситуации, когда передали некорректный purchased_item_id
-GET http://192.168.210.250:8080/purchased_items?purchased_item_id[]=3424234
+GET http://localhost:8020/purchased_items?purchased_item_id[]=3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный pass_id", function (){
@@ -134,7 +134,7 @@ GET http://192.168.210.250:8080/purchased_items?purchased_item_id[]=3424234
  %}
 
 ### Тестирование ситуации, когда передали некорректный id_programme
-GET http://192.168.210.250:8080/purchased_items?id_programme[]=3424234
+GET http://localhost:8020/purchased_items?id_programme[]=3424234
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный id_programme", function (){

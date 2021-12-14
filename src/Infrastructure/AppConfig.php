@@ -1,5 +1,9 @@
 <?php
 
+namespace EfTech\SportClub\Infrastructure;
+
+use Exception;
+
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
 
 /**

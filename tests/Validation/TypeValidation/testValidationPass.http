@@ -1,5 +1,5 @@
 ### Тестирование ситуации, когда передали некорректный pass_id
-GET http://192.168.210.250:8080/pass?pass_id[]=3
+GET http://localhost:8020/pass?pass_id[]=3
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный pass_id", function (){
@@ -14,7 +14,7 @@ GET http://192.168.210.250:8080/pass?pass_id[]=3
  %}
 
 ### Тестирование ситуации, когда передали некорректный duration
-GET http://192.168.210.250:8080/pass?duration[]=3
+GET http://localhost:8020/pass?duration[]=3
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный duration", function (){

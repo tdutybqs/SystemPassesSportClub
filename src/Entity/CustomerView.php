@@ -1,6 +1,9 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
 require_once __DIR__ . "/Customer.php";
+
+use EfTech\SportClub\Infrastructure\InvalidDataStructureException;
 
 final class CustomerView extends Customer
 {

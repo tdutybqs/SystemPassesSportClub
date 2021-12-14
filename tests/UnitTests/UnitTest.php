@@ -1,5 +1,10 @@
 <?php
 
+use EfTech\SportClub\Infrastructure\AppConfig;
+use EfTech\SportClub\Infrastructure\Logger\LoggerInterface;
+use EfTech\SportClub\Infrastructure\Logger\NullLogger\Logger;
+use function EfTech\SportClub\Infrastructure\app;
+
 require_once __DIR__ . '/../../src/Infrastructure/AppConfig.php';
 require_once __DIR__ . '/../../src/Infrastructure/appRun.php';
 require_once __DIR__ . '/../../src/Infrastructure/Logger/NullLogger/Logger.php';
@@ -47,9 +52,7 @@ class UnitTest
      */
     private static function testDataProvider(): array
     {
-        $loggerFactory = static function (): LoggerInterface {
-            return new Logger();
-        };
+        $loggerFactory = static function (): LoggerInterface {return new Logger();};
         $handlers = include __DIR__ . '/../../config/request.handler.php';
         return [
             [

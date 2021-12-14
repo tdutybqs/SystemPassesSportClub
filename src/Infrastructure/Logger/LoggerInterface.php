@@ -1,5 +1,7 @@
 <?php
 
+namespace EfTech\SportClub\Infrastructure\Logger;
+
 /**
  * Интерфейс логера
  */

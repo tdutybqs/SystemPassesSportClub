@@ -1,5 +1,8 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
+
+use JsonSerializable;
 
 abstract class AbstractUser implements JsonSerializable
 {
@@ -28,13 +31,13 @@ abstract class AbstractUser implements JsonSerializable
     /**
      * Конструктор AbstractUser
      * @param int $id - идентификатор пользователя
-     * @param string $full_name - ФИО пользователя
+     * @param string $fullName - ФИО пользователя
      * @param string $phone - телефон пользователя
      */
-    public function __construct(int $id, string $full_name, string $phone)
+    public function __construct(int $id, string $fullName, string $phone)
     {
         $this->id = $id;
-        $this->full_name = $full_name;
+        $this->full_name = $fullName;
         $this->phone = $phone;
     }
 
@@ -70,8 +73,21 @@ abstract class AbstractUser implements JsonSerializable
 
     /**
      * Сериализация данных
-     * @return mixed
+     * @return mixed|void
      */
-    abstract public function jsonSerialize();
+    public function jsonSerializes():array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->full_name,
+            'year' => $this->phone,
+        ];
+    }
 
+    /**
+     * Создает сущность из массива
+     * @param array $data
+     * @return AbstractUser
+     */
+    abstract public static function createFromArray(array $data): AbstractUser;
 }

@@ -1,5 +1,17 @@
 <?php
 
+namespace Controller;
+
+use EfTech\Sportclub\Entity\Programme;
+use EfTech\Sportclub\Entity\PurchasedItem;
+use EfTech\Sportclub\Entity\Pass;
+use EfTech\Sportclub\Entity\CustomerView;
+use Exception;
+use EfTech\Sportclub\Infrastructure\AppConfig;
+use EfTech\Sportclub\Infrastructure\Logger\LoggerInterface;
+use function EfTech\Sportclub\Infrastructure\loadData;
+use function EfTech\Sportclub\Infrastructure\paramTypeValidation;
+
 include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
 require_once __DIR__ . "/../Entity/CustomerView.php";
 require_once __DIR__ . "/../Entity/PurchasedItem.php";
@@ -14,7 +26,7 @@ require_once __DIR__ . "/../Infrastructure/AppConfig.php";
  * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig - конфиг приложения
  * @return array
- * @throws JsonException
+ * @throws Exception
  */
 return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
     $customerResult = [];
@@ -70,7 +82,7 @@ return static function (array $request, LoggerInterface $logger, AppConfig $appC
                 "phone" => $customerIdToInfo[$customerId]->getPhone(),
                 "passport" => $customerIdToInfo[$customerId]->getPassport()
             ];
-            $searchCriteriaMet = checkCriteria($request, array_merge($purchasedItem, $customerInfo));
+            $searchCriteriaMet = \EfTech\SportClub\Infrastructure\checkCriteria($request, array_merge($purchasedItem, $customerInfo));
 
             if ($searchCriteriaMet) {
                 // Если такого кастомера еще нет в массиве, добавляем по id кастомера флаг true

@@ -1,5 +1,5 @@
 ### Тестирование ситуации, когда передали некорректный id_programme
-GET http://192.168.210.250:8080/programmes?id_programme[]=1
+GET http://localhost:8020/programmes?id_programme[]=1
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный id_programme", function (){
@@ -14,7 +14,7 @@ GET http://192.168.210.250:8080/programmes?id_programme[]=1
  %}
 
 ### Тестирование ситуации, когда передали некорректный name
-GET http://192.168.210.250:8080/programmes?name[]=ИМЯ
+GET http://localhost:8020/programmes?name[]=ИМЯ
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный name", function (){
@@ -29,7 +29,7 @@ GET http://192.168.210.250:8080/programmes?name[]=ИМЯ
  %}
 
 ### Тестирование ситуации, когда передали некорректный duration
-GET http://192.168.210.250:8080/programmes?duration[]=1
+GET http://localhost:8020/programmes?duration[]=1
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный duration", function (){
@@ -44,7 +44,7 @@ GET http://192.168.210.250:8080/programmes?duration[]=1
  %}
 
 ### Тестирование ситуации, когда передали некорректный discount
-GET http://192.168.210.250:8080/programmes?discount[]=14
+GET http://localhost:8020/programmes?discount[]=14
 
 > {%
  client.test("Тестирование ситуации, когда передали некорректный discount", function (){

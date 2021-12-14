@@ -1,5 +1,9 @@
 <?php
 
+namespace EfTech\SportClub\Infrastructure\Logger\FileLogger;
+
+use EfTech\SportClub\Infrastructure\Logger\LoggerInterface;
+
 require_once __DIR__ . "/../LoggerInterface.php";
 
 /**

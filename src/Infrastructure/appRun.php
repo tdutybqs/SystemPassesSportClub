@@ -1,5 +1,12 @@
 <?php
 
+namespace EfTech\SportClub\Infrastructure;
+
+use Exception;
+use EfTech\SportClub\Infrastructure\Logger\LoggerInterface;
+use Throwable;
+use UnexpectedValueException;
+
 require_once __DIR__ . "/../Infrastructure/AppConfig.php";
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
 
@@ -19,7 +26,7 @@ function app(array $handlers, string $requestUri, callable $loggerFactory, calla
         parse_str($query, $requestParams);
 
         $appConfig = $appConfigFactory();
-        if (!($appConfig instanceof AppConfig)) {
+        if (!($appConfig instanceof \EfTech\SportClub\Infrastructure\AppConfig)) {
             throw new UnexpectedValueException("Некорректный конфиг");
         }
 
@@ -42,7 +49,7 @@ function app(array $handlers, string $requestUri, callable $loggerFactory, calla
                 ]
             ];
         }
-    } catch (InvalidDataStructureException $e) {
+    } catch (\EfTech\SportClub\Infrastructure\InvalidDataStructureException $e) {
         $result = [
             'httpCode' => 503,
             'result' => [
@@ -61,8 +68,3 @@ function app(array $handlers, string $requestUri, callable $loggerFactory, calla
     }
     return $result;
 }
-
-
-
-
-

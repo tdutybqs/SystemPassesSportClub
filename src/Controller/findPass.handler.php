@@ -1,10 +1,19 @@
 <?php
 
+namespace Controller;
+
+use EfTech\Sportclub\Entity\Pass;
+use EfTech\Sportclub\Entity\Customer;
+use Exception;
+use EfTech\Sportclub\Infrastructure\AppConfig;
+use EfTech\Sportclub\Infrastructure\Logger\LoggerInterface;
+use function EfTech\Sportclub\Infrastructure\loadData;
+use function EfTech\Sportclub\Infrastructure\paramTypeValidation;
+
 include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
+require_once __DIR__ . "/../Infrastructure/Logger/LoggerInterface.php";
 require_once __DIR__ . "/../Entity/Pass.php";
 require_once __DIR__ . "/../Entity/Customer.php";
-
-require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
 
 /**
  * Функция, показывающая абонементы пользователей
@@ -12,7 +21,7 @@ require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
  * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig - конфиг приложения
  * @return array
- * @throws JsonException
+ * @throws Exception
  */
 return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
     $passes = loadData($appConfig->getPathToPass());
@@ -43,7 +52,7 @@ return static function (array $request, LoggerInterface $logger, AppConfig $appC
                 "phone" => $customersIdToInfo[$pass['customer_id']]->getPhone(),
                 "passport" => $customersIdToInfo[$pass['customer_id']]->getPassport()
             ];
-            $searchCriteriaMet = checkCriteria($request, array_merge($pass, $benefitPassObjToArray));
+            $searchCriteriaMet = \EfTech\SportClub\Infrastructure\checkCriteria($request, array_merge($pass, $benefitPassObjToArray));
 
             if ($searchCriteriaMet) {
                 $pass['customer'] = $customersIdToInfo[$pass['customer_id']];

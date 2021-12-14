@@ -1,6 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../LoggerInterface.php";
+namespace EfTech\SportClub\Infrastructure\Logger\NullLogger;
+
+require_once __DIR__ . '/../LoggerInterface.php';
+
+use EfTech\SportClub\Infrastructure\Logger\LoggerInterface;
 
 /**
  * Логирует в "никуда" в null

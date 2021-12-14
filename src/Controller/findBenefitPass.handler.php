@@ -1,11 +1,20 @@
 <?php
 
+namespace Controller;
+
+use EfTech\Sportclub\Entity\BenefitPass;
+use EfTech\Sportclub\Entity\Customer;
+use Exception;
+use EfTech\Sportclub\Infrastructure\AppConfig;
+use EfTech\Sportclub\Infrastructure\Logger\LoggerInterface;
+use function EfTech\Sportclub\Infrastructure\loadData;
+use function EfTech\Sportclub\Infrastructure\paramTypeValidation;
+
+include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
+require_once __DIR__ . "/../Infrastructure/Logger/LoggerInterface.php";
 require_once __DIR__ . "/../Entity/BenefitPass.php";
 require_once __DIR__ . "/../Entity/Customer.php";
 require_once __DIR__ . "/../Infrastructure/AppConfig.php";
-
-include_once __DIR__ . "/../Infrastructure/generalFunctions.php";
-require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
 
 /**
  * Функция обработки поиска льгот
@@ -13,7 +22,7 @@ require_once __DIR__."/../Infrastructure/Logger/LoggerInterface.php";
  * @param LoggerInterface $logger -  компонент, отвечающий за логирование
  * @param AppConfig $appConfig
  * @return array
- * @throws JsonException
+ * @throws Exception
  */
 return static function (array $request, LoggerInterface $logger, AppConfig $appConfig): array {
     $logger->log('Переход на: /benefit_pass выполнен.');
@@ -55,7 +64,7 @@ return static function (array $request, LoggerInterface $logger, AppConfig $appC
                     'end' => $customerIdToBenefitPass[$customer['customer_id']]->getEnd()
                 ];
             }
-            $benefitPassPurchaseReportsMeetSearchCriteria = checkCriteria($request,
+            $benefitPassPurchaseReportsMeetSearchCriteria = \EfTech\SportClub\Infrastructure\checkCriteria($request,
                 array_merge($customer, $benefitPassObjToArray));
 
             if ($benefitPassPurchaseReportsMeetSearchCriteria && $customerIdToBenefitPass[$customer["customer_id"]] !== null) {

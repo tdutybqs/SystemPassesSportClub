@@ -1,7 +1,11 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
 require_once __DIR__ . "/Pass.php";
 require_once __DIR__."/../Infrastructure/InvalidDataStructureException.php";
+
+use Exception;
+use EfTech\SportClub\Infrastructure\InvalidDataStructureException;
 
 /**
  * Льготы
@@ -94,7 +98,7 @@ class BenefitPass extends Pass
      * Создание объекта из массива
      * @param array $data
      * @return Pass
-     * @throws InvalidDataStructureException - некорректная структура файла
+     * @throws Exception - некорректная структура файла
      */
     public static function createFromArray(array $data): Pass
     {

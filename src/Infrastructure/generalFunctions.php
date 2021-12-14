@@ -1,5 +1,10 @@
 <?php
 
+namespace EfTech\SportClub\Infrastructure;
+
+use EfTech\SportClub\Infrastructure\Logger\LoggerInterface;
+use JsonException;
+
 /**
  * Загрузка данных из ресурса
  *
@@ -37,6 +42,16 @@ function paramTypeValidation(array $validateParameters, array $params): ?array
         }
     }
     return $result;
+}
+
+/**
+ * Логирует текстовое сообщение
+ *
+ * @param string $errMsg - логируемое сообщение
+ */
+function loggerInFile(string $errMsg): void
+{
+    file_put_contents(__DIR__ . "/../../var/log/app.log", $errMsg . "\n", FILE_APPEND);
 }
 
 /**

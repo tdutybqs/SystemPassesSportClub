@@ -1,8 +1,13 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
 require_once __DIR__ . "/Programme.php";
 require_once __DIR__ . "/Pass.php";
 require_once __DIR__ . "/../Infrastructure/InvalidDataStructureException.php";
+
+use Exception;
+use EfTech\SportClub\Infrastructure\InvalidDataStructureException;
+use JsonSerializable;
 
 /**
  * Купленные продукта
@@ -102,7 +107,7 @@ class PurchasedItem implements JsonSerializable
      * Создание объекта из массива
      * @param $data
      * @return static
-     * @throws InvalidDataStructureException - некорректная структура файла
+     * @throws Exception - некорректная структура файла
      */
     public static function createFromArray($data): PurchasedItem
     {

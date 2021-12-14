@@ -1,7 +1,11 @@
 <?php
 
+namespace EfTech\SportClub\Entity;
 require_once __DIR__ . "/AbstractUser.php";
 require_once __DIR__ . "/../Infrastructure/InvalidDataStructureException.php";
+
+use Exception;
+use EfTech\SportClub\Infrastructure\InvalidDataStructureException;
 
 /**
  * Клиент
@@ -11,21 +15,21 @@ class Customer extends AbstractUser
     /**
      * Конструктор клиента
      * @param int $id - идентификатор клиента
-     * @param string $full_name - ФИО клиента
+     * @param string $fullName - ФИО клиента
      * @param string $phone - телефон клиента
      * @param string $birthdate - дата рождения клиента
      * @param string $passport - пасспортные данные клиента
      * @param string $sex - пол
      */
     public function __construct(
-        int $id,
-        string $full_name,
+        int    $id,
+        string $fullName,
         string $phone,
         string $birthdate,
         string $passport,
         string $sex
     ) {
-        parent::__construct($id, $full_name, $phone);
+        parent::__construct($id, $fullName, $phone);
         $this->birthdate = $birthdate;
         $this->passport = $passport;
         $this->sex = $sex;
@@ -122,7 +126,7 @@ class Customer extends AbstractUser
      * Создание объекта из массива
      * @param array $data
      * @return Customer
-     * @throws InvalidDataStructureException - некорректная структура файла
+     * @throws Exception - некорректная структура файла
      */
     public static function createFromArray(array $data): Customer
     {
