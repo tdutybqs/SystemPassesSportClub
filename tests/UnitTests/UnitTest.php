@@ -60,7 +60,7 @@ class UnitTest
                 'in' => [
                     $handlers,
                     'http://localhost:8080/benefit_pass?customer_id=5',
-                    'Factory::create',
+                    '\EfTech\SportClub\Infrastructure\Logger\Factory::create',
                     static function () {
                         $config = include __DIR__ . '/../../config/dev/config.php';
                         $config['pathToBenefitPass'] = __DIR__ . '/../data/broken_benefit_pass.json';
